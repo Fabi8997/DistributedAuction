@@ -1,0 +1,41 @@
+body {
+    font-size: 28px;
+    margin: 0;
+    background-color: #EEEDDE;
+}
+
+ul {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #141E27;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: #EEEDDE;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #203239;
+}
+
+.active {
+    background-color: #11151AFF;
+}
+
+#credit{
+    float: right;
+}
