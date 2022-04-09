@@ -14,7 +14,7 @@
     <li><a href="homepage.jsp">Home</a></li>
     <li><a href="auctions.jsp">Auctions</a></li>
     <li><a href="goods.jsp">Goods</a></li>
-    <li id="credit"><a href="credit.jsp">0,00&euro;</a></li>
+    <li id="credit"><a class="active" href="credit.jsp">0,00&euro;</a></li>
 </ul>
 
 <h3>Sticky Navigation Bar Example</h3>
