@@ -1,9 +1,15 @@
+<%@ page import="java.util.function.ToDoubleBiFunction" %>
 <html>
 <head>
     <link rel="stylesheet" href="styles/generalStyle.css">
     <title>index</title>
 </head>
 <body>
+
+
+<%
+    // TODO: 09/04/2022 ADD ON EACH SERVLET THE RETRIEV OF THE CREDIT!
+%>
 
     <div class="header">
         <h2>Distributed Auction</h2>

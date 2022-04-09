@@ -3,10 +3,14 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>Auctions</title>
 
+    <%
+        int iterations =(int)request.getAttribute("iterations");
+    %>
+
     <script>
         function myFunction() {
             // Declare variables
-            var input, filter, table, tr, td, i, txtValue;
+            let input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
             table = document.getElementById("myTable");
@@ -25,14 +29,25 @@
                 }
             }
         }
+
+        function addClickEvent() {
+            for (let i = 0; i < <%=iterations%>; i++) {
+                
+                <%
+                // TODO: 09/04/2022 Add instead of row-i the id of the auction!
+                %>
+                
+                const row = document.getElementById("row-"+i.toString());
+
+                row.addEventListener("click", () => {
+                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood=row-"+i.toString();
+                });
+            }
+        }
     </script>
 
 </head>
-<body>
-
-<%
-    int iteration =(int)request.getAttribute("iterations");
-%>
+<body onload="addClickEvent()">
 
 <div class="header">
     <h2>Distributed Auction</h2>
@@ -63,13 +78,13 @@
         </thead>
         <tbody>
         <%
-            for(int i = 0; i < iteration; i++) {
+            for(int i = 0; i < iterations; i++) {
         %>
-        <tr>
+        <tr id = "row-<%=i%>">
             <td>Data<%=i%></td>
             <td>Data<%=i%></td>
             <td>Data<%=i%></td>
-            <td><a href="#auctionData<%=i%>">Data<%=i%></a></td>
+            <td>Data<%=i%></td>
         </tr>
         <% } %>
         </tbody>
