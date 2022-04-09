@@ -1,0 +1,56 @@
+Idea: sistema d'asta
+Server: gestisce richieste d'asta, mantiene coda di acquirenti e gestore d'asta:
+mantiene un contatore di acquirenti, ha un'upper bound; quando è al massimo valore
+mantiene coda di acquirenti in attesa
+Client: può essere acquirente/ gestore d'asta; ogni utente deve loggare/registrarsi; ogn utente propone
+un suo bene come oggetto dell'asta; l'utente setta la durata dell'asta; un'utente può partecipare ad
+un'asta aperta; se timer scade l'asta è chiusa, e vince l'ultimo offrerente con il valore più alto, o nessuno
+se non è entrato nessuno; se c'è solo un acquirente attivo l'asta si chiude a suo favore;
+se tutti gli acquirenti si ritirano l'asta è annullata; se tutti si ritirano meno che uno quest'ultimo vince
+l'asta; se si libera un posto nell'asta un utente ATTIVO e IN ATTESA entra nell'asta;
+Profilo utente: un utente registra i suoi beni, il suo capitale, i suoi dati; l'applicazione registra per ogni 
+utente i beni acquistati e i soldi spesi
+Erlang: server che gestisce le code, il timer, il contatore (?)
+Attori: sistema (server), utente (non registrato/gestore asta/acquirente), bene (token)
+Sincronizzazione: offerte d'asta, chiusura asta (nel caso c'è un vincitore e il bene viene ceduto),
+acquirente esce dall'asta (deve entrare uno in ATTESA)
+Stati utente: ATTIVO, OFFLINE, IN_ASTA, IN_ATTESA
+Utente: username, password (criptata), lista di beni, capitale
+(sistema tiene traccia anche del capitale speso?)
+Apertura asta: gestore condivide bene, setta timer = max_time, cont = 0, offerta = starting_price
+Cliente entra in asta: cont++
+Prima offerta:
+If offer > starting_price then current = offer
+Offerte successive:
+If offer > current then current = offer
+Quando nessun cliente rialza ma rimane in asta si attiva un timer; quando scade il bene viene ceduto a
+chi aveva offerto l'ultimo valore di current
+Un cliente può uscire dall'asta: in tal caso può entrare un altro cliente che può potenzialmente offrire
+cifre maggiori di current
+Scadenza timer generale/ scadenza timer post-offerta--> asta chiusa
+Se l'asta è chiusa e current = 0 o il cliente che aveva offerto current non è più in asta ---> asta ANNULLATA
+Software Architecture:
+-Tomcat
+-Maven (Java)
+-Mnesia (Erlang)
+Java Code:
+- beans: Auction(good, date, duration, startingprice, status, currentprice, currentuser, partecipants), Good (name, price, status, user), Offer(user, value,auction),
+ User(username, password, goods, status)
+- communication: authentication classes, gateway classes
+- controller: MainPage, AuctionManager, LoginManager
+- servlet: LoginReq, SignReq, SearchAuctionReq, InsertGoodReq, RemoveGoodReq, OfferReq, CreateAuctionReq, EnterAuctionReq 
+- utils: 
+- webservice: roba di tomcat
+
+Erlang Code:
+- timer
+- authentication
+- auctions
+- msg_server
+
+Html : 
+- loginpage
+- signuppage
+- ricaricacredito
+- auction
+- homepage
