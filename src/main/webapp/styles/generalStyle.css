@@ -33,9 +33,68 @@ li a:hover {
 }
 
 .active {
-    background-color: #11151AFF;
+    background-color: #54749f;
 }
 
 #credit{
     float: right;
+}
+
+table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+}
+
+table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+}
+
+tbody tr:hover{
+    background-color: rgba(32, 50, 57, 0.4);
+}
+
+table th,
+table td {
+    padding: .625em;
+    text-align: center;
+}
+
+table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    background-color: #141E27;
+    color: #EEEDDE;
+}
+
+#myInput {
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #EEEDDE;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
+.auction_content{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.auction_content h3{
+    text-align: center;
 }
