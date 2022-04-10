@@ -1,27 +1,31 @@
-<%@ page import="java.util.function.ToDoubleBiFunction" %>
 <html>
 <head>
-    <link rel="stylesheet" href="styles/generalStyle.css">
-    <title>index</title>
+    <link rel="stylesheet" href="styles/indexStyle.css">
+    <title>Login</title>
 </head>
 <body>
 
 
 <%
-    // TODO: 09/04/2022 ADD ON EACH SERVLET THE RETRIEV OF THE CREDIT!
+    // TODO: 09/04/2022 ADD ON EACH SERVLET THE RETRIEVE THE CREDIT!
 %>
 
-    <div class="header">
-        <h2>Distributed Auction</h2>
-        <p>We have to change the title for sure.</p>
-    </div>
+<div class="login-card">
+    <h1>Log-in</h1><br>
+    <form method="post" action="<%= request.getContextPath() %>/LoginServlet">
+        <label>
+            <input type="text" name="user" placeholder="Username">
+        </label>
+        <label>
+            <input type="password" name="pass" placeholder="Password">
+        </label>
+        <input type="submit" name="login" class="login login-submit" value="login">
+    </form>
 
-    <ul class="topnav">
-        <li><a class="active" href="<%= request.getContextPath() %>/HomepageServlet">Home</a></li>
-        <li><a href="<%= request.getContextPath() %>/AuctionsServlet">Auctions</a></li>
-        <li><a href="<%= request.getContextPath() %>/GoodsServlet">Goods</a></li>
-        <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
-    </ul>
+    <div class="login-help">
+        <a href="<%= request.getContextPath() %>/pages/jsp/register.jsp">Register</a>
+    </div>
+</div>
 
 </body>
 </html>

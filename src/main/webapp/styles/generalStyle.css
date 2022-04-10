@@ -11,7 +11,6 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #141E27;
-    position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
 }
@@ -36,8 +35,18 @@ li a:hover {
     background-color: #54749f;
 }
 
-#credit{
+#credit, #logout{
     float: right;
+}
+
+#logout{
+    background-color: #486286;
+}
+
+
+
+#logout img{
+    size: 32px;
 }
 
 table {
