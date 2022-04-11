@@ -14,10 +14,10 @@
     <h1>Log-in</h1><br>
     <form method="post" action="<%= request.getContextPath() %>/LoginServlet">
         <label>
-            <input type="text" name="user" placeholder="Username">
+            <input type="text" name="user" placeholder="Username" minlength="5" maxlength="15" required>
         </label>
         <label>
-            <input type="password" name="pass" placeholder="Password">
+            <input type="password" name="pass" placeholder="Password" required>
         </label>
         <input type="submit" name="login" class="login login-submit" value="login">
     </form>

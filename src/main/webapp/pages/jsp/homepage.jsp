@@ -7,7 +7,6 @@
 
 <div class="header">
     <h2>Distributed Auction</h2>
-    <p>We have to change the title for sure.</p>
 </div>
 
 <ul class="topnav">
