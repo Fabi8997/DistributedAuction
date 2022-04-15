@@ -4,6 +4,11 @@
     <title>homepage</title>
 </head>
 <body>
+<%
+    String user = (String) session.getAttribute("user");
+    System.out.println("Retrieving the information for "+user+"...");
+    // TODO: 15/04/2022 From here we initialize the informations for the page content.
+%>
 
 <div class="header">
     <h2>Distributed Auction</h2>
