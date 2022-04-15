@@ -20,6 +20,16 @@ body {
     font-size: 30px;
 }
 
+#error{
+    font-weight: bold;
+    color: red;
+}
+
+#info{
+    font-weight: bold;
+    color: green;
+}
+
 .login-card input[type=submit] {
     width: 100%;
     display: block;

@@ -5,6 +5,10 @@
 </head>
 <body>
 
+<%
+    String idGood = (request.getAttribute("idGood") != null)?(String) request.getAttribute("idGood"):request.getParameter("idGood");
+%>
+
 <div class="header">
     <h2>Distributed Auction</h2>
     <p>We have to change the title for sure.</p>
@@ -45,7 +49,8 @@
     </table>
 
 
-    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet?idGood=prova">
+    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet">
+        <input type="hidden" name="idGood" value="<%=idGood%>">
         <label for="offerInput"></label><input id="offerInput" type="text" placeholder="Insert your offer.." name="offer">
         <button type="submit">OFFER</button>
     </form>

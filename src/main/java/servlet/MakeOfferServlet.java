@@ -10,21 +10,53 @@ public class MakeOfferServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // TODO: 09/04/2022 Perform the offer and redirect to the previous page
-        
-        String targetJSP = "/pages/jsp/auction_view.jsp";
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            System.out.println("Session not exists!");
 
-        // TODO: 09/04/2022 Retrieve from the db the object Auction with id = idAuction
+            //Return to login page
+            String targetJSP = "index.jsp";
 
-        // TODO: 09/04/2022 Add to the session the object retrieved in order to display it on auction_view 
-        HttpSession session = request.getSession(true);
-        String offer = (String)request.getParameter("offer");
-        System.out.println(offer +  " for " + session.getAttribute("idGood"));
-        //Remember to delete the good if we exit this page!
+            //Set the error msg
+            request.setAttribute("error","Please Login!");
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
-        requestDispatcher.forward(request,response);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+            requestDispatcher.forward(request,response);
+        } else {
 
+            if(session.getAttribute("user") == null){
+                System.out.println("Not logged!");
+
+                //Return to login page
+                String targetJSP = "index.jsp";
+
+                //Set the error msg
+                request.setAttribute("error","Please Login!");
+
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+                requestDispatcher.forward(request,response);
+            }else{
+                System.out.println("Sending the offer...");
+
+                //Retrieve the information to make the offer!
+                String offer = request.getParameter("offer");
+                String idGood = request.getParameter("idGood");
+                String user = (String) session.getAttribute("user");
+
+                //Test
+                System.out.println(user + " offered " + offer +  " for " + idGood);
+
+                //Send the offer to the server and reload the page
+                // TODO: 15/04/2022 Add the send of the offer
+
+                //including the id of the good in the reloaded page
+                request.setAttribute("idGood", idGood);
+
+                String targetJSP = "/pages/jsp/auction_view.jsp";
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+                requestDispatcher.forward(request,response);
+            }
+        }
     }
 
     @Override

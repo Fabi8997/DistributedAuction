@@ -24,6 +24,7 @@
         </label>
         <input type="submit" name="signup" class="login login-submit" value="Sign Up">
     </form>
+    <% // TODO: 15/04/2022 ADD the error (?) %>
 </div>
 
 <script>

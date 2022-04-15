@@ -40,7 +40,7 @@
                 const row = document.getElementById("row-"+i.toString());
 
                 row.addEventListener("click", () => {
-                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood=row-"+i.toString();
+                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood="+i.toString();
                 });
             }
         }

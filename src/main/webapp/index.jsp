@@ -23,6 +23,13 @@
     </form>
 
     <div class="login-help">
+        <%
+            if(request.getAttribute("error") != null){
+        %>
+        <p id="error"><%= request.getAttribute("error")%></p>
+        <% }else if(request.getAttribute("info") != null){%>
+        <p id="info"><%= request.getAttribute("info")%></p>
+        <% }%>
         <a href="<%= request.getContextPath() %>/pages/jsp/register.jsp">Register</a>
     </div>
 </div>

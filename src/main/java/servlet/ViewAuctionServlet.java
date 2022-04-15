@@ -14,15 +14,51 @@ public class ViewAuctionServlet extends HttpServlet {
 
         // TODO: 09/04/2022 Add to the session the object retrieved in order to display it on auction_view 
 
-        String targetJSP = "/pages/jsp/auction_view.jsp";
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            System.out.println("Session not exists!");
 
-        String idGood = request.getParameter("idGood");
-        HttpSession session = request.getSession(true);
-        session.setAttribute("idGood",idGood);
+            //Return to login page
+            String targetJSP = "index.jsp";
 
+            //Set the error msg
+            request.setAttribute("error","Please Login!");
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
-        requestDispatcher.forward(request,response);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+            requestDispatcher.forward(request,response);
+        } else {
+
+            if(session.getAttribute("user") == null){
+                System.out.println("Not logged!");
+
+                //Return to login page
+                String targetJSP = "index.jsp";
+
+                //Set the error msg
+                request.setAttribute("error","Please Login!");
+
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+                requestDispatcher.forward(request,response);
+            }else{
+                System.out.println("Sending the auction page...");
+
+                //Retrieve the data from the request
+                String idGood = request.getParameter("idGood");
+                System.out.println("The idGood is: " + idGood);
+
+                //Set the data to be displayed in the jsp file
+                request.setAttribute("idGood", idGood);
+
+                // TODO: 15/04/2022 Retrieve the information of the good from the db
+
+                //Open the goods page
+                String targetJSP = "/pages/jsp/auction_view.jsp";
+
+                RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
+                requestDispatcher.forward(request,response);
+            }
+        }
+
     }
 
     @Override
