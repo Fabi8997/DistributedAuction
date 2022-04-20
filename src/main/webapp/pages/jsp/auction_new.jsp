@@ -1,18 +1,24 @@
 <html>
 <head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
-    <title>View Auction</title>
+    <title>Start Auction</title>
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
     <%
         String idGood = (request.getAttribute("idGood") != null)?(String) request.getAttribute("idGood"):request.getParameter("idGood");
         String timestamp = "Apr 18, 2022 23:31:00"; // TODO: 19/04/2022 Take this from the auction object dto retrieved from mnesia
     %>
+    <script>
+
+        function prova(){
+            window.opener.location.href = "<%= request.getContextPath() %>/StartAuctionServlet";
+            window.close();
+        }
+    </script>
 </head>
 <body onload="setTimer('<%=timestamp%>')">
 
 <div class="header">
     <h2>Distributed Auction</h2>
-    <p>We have to change the title for sure.</p>
 </div>
 
 <ul class="topnav">
@@ -37,7 +43,7 @@
         </tr>
         <tr>
             <th>Status:</th>
-            <td>Status</td>
+            <td>Not in auction</td>
         </tr>
         <tr>
             <th>Current offer:</th>
@@ -50,10 +56,27 @@
     </table>
 
 
-    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet">
+
+    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/StartAuctionServlet">
         <input type="hidden" name="idGood" value="<%=idGood%>">
-        <label for="offerInput"></label><input id="offerInput" type="text" placeholder="Insert your offer.." name="offer">
-        <button type="submit">OFFER</button>
+         <label>
+            <input type="datetime-local" >
+        </label>
+        <label>
+            <select name="option">
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="opel">Opel</option>
+                <option value="audi">Audi</option>
+            </select>
+        </label>
+        <label>
+            <input type="number" min="0.00" max="10000.00" step="0.10" value="0,00" name="startPrice"/>
+        </label>
+        <%
+            // TODO: 20/04/2022 Add an if to distinguish between goods on auctions or none!
+        %>
+        <button type="submit" >Start</button>
     </form>
 
 </div>

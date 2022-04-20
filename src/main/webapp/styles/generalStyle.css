@@ -70,7 +70,7 @@ table tr {
     padding: .35em;
 }
 
-.auction_content table tbody tr {
+.auction_content table tbody tr, #current_auction table tbody tr {
     cursor: pointer;
 }
 
@@ -141,7 +141,7 @@ table th {
     background: #f8f8f8;
 }
 
-.ViewAuctionContent form.ViewAuctionContentForm button {
+.ViewAuctionContent button, #content button{
     float: left;
     width: 35%;
     padding: 10px;
@@ -153,8 +153,13 @@ table th {
     cursor: pointer;
 }
 
-.ViewAuctionContent form.ViewAuctionContentForm button:hover {
+.ViewAuctionContent button:hover, #content button:hover {
     background: #486286;
+}
+
+#other_actions button{
+    width: 100%;
+    margin-bottom: 5%;
 }
 
 .ViewAuctionContent form.ViewAuctionContentForm::after {
@@ -175,4 +180,25 @@ table th {
 #info{
     font-weight: bold;
     color: green;
+}
+
+#content{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+#current_auction, #other_actions{
+    display: inline-block;
+    margin-bottom: 5%;
+}
+
+#current_auction{
+    width: 40%;
+    float: left;
+}
+
+#other_actions{
+    width: 40%;
+    float: right;
+
 }
