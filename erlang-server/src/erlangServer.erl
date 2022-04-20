@@ -30,22 +30,16 @@
 
 %% @doc Spawns the server and registers the local name (unique)
 start_server() ->
-  gen_server:start({local, unisup_gen_server}, ?MODULE, [], []).
+  gen_server:start({local, da_gen_server}, ?MODULE, [], []).
 
 %% @doc Standard API for every possible request to the server.
 call_server(Content) ->
-  gen_server:call(unisup_gen_server, Content).
+  gen_server:call(da_gen_server, Content).
 
 
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
-
-%% @private
-%% @doc Initializes the server
-init(_) ->
-  rabbitmq:start_rabbitmq_server(),
-  {ok,{}}.
 
 %% @private
 %% @doc Handles messages to be sent: checks the receiver username, if it exists pushes the message into RabbitMQ
@@ -76,14 +70,6 @@ handle_call({log, {Pid, Username, Password, ClientNodeName}}, _From, _)->
 %% @doc Handles register requests: calls MnesiaFunctions:register for username checking and user storaging
 handle_call({register, {Pid, Username, Password, ClientNodeName}}, _From, _)->
   {reply, mnesiaFunctions:register(Username, Password, ClientNodeName, Pid), _ = '_'};
-
-%% @doc handles chat history backup requests: gets every sent or received message and forward that list to the sender
-handle_call({history, Username}, _From, _) ->
-  {reply, mnesiaFunctions:get_user_related_messages(Username), _ = '_'};
-
-%% @doc handles logout: terminates rabbitMQ consuming session
-handle_call({logout, Username}, _From, _) ->
-  {reply, rabbitmq:terminate_consuming_session(Username), _='_'};
 
 handle_call(_, _From, _) ->
   {reply, false, _ = '_'}.

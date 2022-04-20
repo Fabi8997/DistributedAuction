@@ -1,19 +1,22 @@
--record(goods, {sender,
-  receiver,
-  text,
-  timestamp
+-record(goods, {idGood,
+  name,
+  user,
+  value
 }).
 
--record(auctions, {sender,
-  receiver,
-  text,
-  timestamp
+-record(auctions, {idAuction,
+  goodName,
+  winner,
+  timestamp,
+  amount,
+  status
 }).
 
 -record(offers, {sender,
   receiver,
-  text,
-  timestamp
+  value,
+  timestamp,
+  idAuction
 }).
 
 -record(users, {username,

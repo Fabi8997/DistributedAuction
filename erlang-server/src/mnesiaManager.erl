@@ -31,8 +31,16 @@ init() ->
         [{attributes, record_info(fields, users)},
           {disc_copies, [node()]}
         ]),
-      mnesia:create_table(unisup_messages,
-        [{attributes, record_info(fields, unisup_messages)},
+	  mnesia:create_table(auctions,
+        [{attributes, record_info(fields, auctions)},
+          {disc_copies, [node()]}
+        ]),
+      mnesia:create_table(goods,
+        [{attributes, record_info(fields, goods)},
+          {disc_copies, [node()]}
+        ]),		
+      mnesia:create_table(offers,
+        [{attributes, record_info(fields, offers)},
           {type, bag},
           {disc_copies, [node()]}
         ])
@@ -43,10 +51,11 @@ init() ->
 %%% USER OPERATIONS
 %%%===================================================================
 
-add_user(Username, Password, NodeName, Pid) ->
+add_user(Username, Password, Credit, NodeName, Pid) ->
   Fun = fun() ->
     mnesia:write(#users{username = Username,
       password = Password,
+	  credit = Credit,
       nodeName = NodeName,
       pid = Pid
     })
@@ -57,6 +66,13 @@ update_user(Username, NodeName, Pid) ->
   F = fun() ->
     [User] = mnesia:read(users, Username),
     mnesia:write(User#users{nodeName = NodeName, pid = Pid})
+      end,
+  mnesia:activity(transaction, F).
+  
+update_credit(Username, Credit) ->
+  F = fun() ->
+    [User] = mnesia:read(users, Username),
+    mnesia:write(User#users{credit = Credit})
       end,
   mnesia:activity(transaction, F).
 
@@ -132,12 +148,91 @@ retrieve_pid(Username) ->
       end,
   mnesia:activity(transaction, F).
 
+  
+%%%===================================================================
+%%% AUCTION OPERATIONS
+%%%===================================================================
+  
+  add_auction(Id, GoodName, Winner, Timestamp, Amount, Status) ->
+  Fun = fun() ->
+    mnesia:write(#auctions{idAuction = id,
+      goodName = GoodName,
+      status = Status
+    })
+        end,
+  mnesia:activity(transaction, Fun).
 
+update_auction(Id, Winner, Amount, Status) ->
+  F = fun() ->
+    [Auction] = mnesia:read(auctions, Id),
+    mnesia:write(Auction#auctions{winner = Winner, amount = Amount, status = Status})
+      end,
+  mnesia:activity(transaction, F).
+
+is_auction_present(Id) ->
+  F = fun() ->
+    case mnesia:read({auctions, Id}) =:= [] of
+      true ->
+        false;
+      false ->
+        true
+    end
+      end,
+  mnesia:activity(transaction, F).
+
+readTest(Id) ->
+  F = fun() ->
+    mnesia:read({auctions, Id})
+      end,
+  mnesia:activity(transaction, F).
+  
+  
+%%%===================================================================
+%%% GOOD OPERATIONS
+%%%===================================================================
+  
+   add_good(Id, Name, User, Value) ->
+  Fun = fun() ->
+    mnesia:write(#goods{idGood = Id,
+	  name = Name,
+	  user = User,
+	  value = Value
+    })
+        end,
+  mnesia:activity(transaction, Fun).
+
+update_good(Id, User, Value) ->
+  F = fun() ->
+    [Good] = mnesia:read(goods, Id),
+    mnesia:write(Good#goods{user = User, value = Value})
+      end,
+  mnesia:activity(transaction, F).
+
+is_good_present(Id) ->
+  F = fun() ->
+    case mnesia:read({goods, Id}) =:= [] of
+      true ->
+        false;
+      false ->
+        true
+    end
+      end,
+  mnesia:activity(transaction, F).
+
+
+readTest(Id) ->
+  F = fun() ->
+    mnesia:read({goods, Id})
+      end,
+  mnesia:activity(transaction, F).
+  
+  
+  
 %%%===================================================================
 %%% MESSAGE OPERATIONS
 %%%===================================================================
 
-insert_new_message(Sender, Receiver, Text) ->
+insert_new_message(Sender, Receiver, Value) ->
   Fun = fun() ->
     %% CHECK IF THE SENDER AND THE RECEIVER DO EXIST
     case mnesia:read({users, Sender}) =:= []  of
@@ -148,48 +243,20 @@ insert_new_message(Sender, Receiver, Text) ->
           true ->
             false;
           false ->
-            add_message(Sender, Receiver, Text)
+            add_message(Sender, Receiver, Value)
         end
     end
         end,
   mnesia:activity(transaction, Fun).
 
-add_message(Sender, Receiver, Text) ->
+add_message(Sender, Receiver, Value) ->
   Fun = fun() ->
     Timestamp = time_format:format_utc_timestamp(),
     mnesia:write(#offers{
       %sender = {Sender, Timestamp},
       sender = Sender,
       receiver = Receiver,
-      text = Text,
-      timestamp = Timestamp
-    }),
-    Timestamp
-        end,
-  mnesia:activity(transaction, Fun).
-
-add_good(Sender, Receiver, Text) ->
-  Fun = fun() ->
-    Timestamp = time_format:format_utc_timestamp(),
-    mnesia:write(#goods{
-      %sender = {Sender, Timestamp},
-      sender = Sender,
-      receiver = Receiver,
-      text = Text,
-      timestamp = Timestamp
-    }),
-    Timestamp
-        end,
-  mnesia:activity(transaction, Fun).
-
-add_auction(Sender, Receiver, Text) ->
-  Fun = fun() ->
-    Timestamp = time_format:format_utc_timestamp(),
-    mnesia:write(#goods{
-      %sender = {Sender, Timestamp},
-      sender = Sender,
-      receiver = Receiver,
-      text = Text,
+      value = Value,
       timestamp = Timestamp
     }),
     Timestamp
@@ -198,7 +265,7 @@ add_auction(Sender, Receiver, Text) ->
 
 all_messages() ->
   F = fun() ->
-    Q = qlc:q([{E#offers.sender, E#offers.receiver, E#offers.text, E#offers.timestamp} || E <- mnesia:table(offers)]),
+    Q = qlc:q([{E#offers.sender, E#offers.receiver, E#offers.value, E#offers.timestamp} || E <- mnesia:table(offers)]),
     qlc:e(Q)
       end,
   mnesia:transaction(F).
@@ -206,7 +273,7 @@ all_messages() ->
 message_sent(Username) ->
   F = fun() ->
     %Q = qlc:q([{Username, E#unisup_messages.receiver, E#unisup_messages.text, E#unisup_messages.timestamp} || E <- mnesia:table(unisup_messages), hd(tuple_to_list(E#unisup_messages.sender)) == Username]),
-    Q = qlc:q([{Username, E#offers.receiver, E#offers.text, E#offers.timestamp} || E <- mnesia:table(offers), E#offers.sender == Username]),
+    Q = qlc:q([{Username, E#offers.receiver, E#offers.value, E#offers.timestamp} || E <- mnesia:table(offers), E#offers.sender == Username]),
     qlc:e(Q)
       end,
   mnesia:transaction(F).
@@ -218,7 +285,7 @@ get_message_sent(Username) ->
 message_received(Username) ->
   F = fun() ->
     %Q = qlc:q([{hd(tuple_to_list(E#unisup_messages.sender)), Username, E#unisup_messages.text, E#unisup_messages.timestamp} || E <- mnesia:table(unisup_messages), E#unisup_messages.receiver == Username]),
-    Q = qlc:q([{E#offers.sender, Username, E#offers.text, E#offers.timestamp} || E <- mnesia:table(offers), E#offers.receiver == Username]),
+    Q = qlc:q([{E#offers.sender, Username, E#offers.value, E#offers.timestamp} || E <- mnesia:table(offers), E#offers.receiver == Username]),
     qlc:e(Q)
       end,
   mnesia:transaction(F).
