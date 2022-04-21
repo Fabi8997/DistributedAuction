@@ -10,6 +10,17 @@
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
 
     <script>
+
+        var popupWindow=null;
+
+        function openPopupWindow(w, h, idGood) {
+            const y = window.top.outerHeight / 2 + window.top.screenY - ( h / 2);
+            const x = window.top.outerWidth / 2 + window.top.screenX - ( w / 2);
+            popupWindow = window.open('<%=request.getContextPath()%>/NewAuctionServlet?idGood=' + idGood.toString(), 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width='+w+',height='+h+' top='+y+', left='+x)
+            document.getElementById("overlay").style.display = "block";
+            document.body.style.filter = "blur(1px)";
+        }
+
         function myFunction() {
             // Declare variables
             let input, filter, table, tr, td, i, txtValue;
@@ -42,15 +53,27 @@
                 const row = document.getElementById("row-"+i.toString());
 
                 row.addEventListener("click", () => {
-                    //window.location.href = "<%=request.getContextPath()%>/NewAuctionServlet?idGood="+i.toString();
-                    window.open('<%=request.getContextPath()%>/NewAuctionServlet?idGood='+i.toString(),'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=350,height=250')
+                    openPopupWindow(500,570,i);
                 });
             }
+        }
+        function parent_disable() {
+            if(popupWindow && !popupWindow.closed)
+                popupWindow.focus();
+            else {
+                document.getElementById("overlay").style.display = "none";
+                document.body.style.filter = "none";
+            }
+
         }
     </script>
 
 </head>
-<body onload="addClickEvent(); setTimers()">
+<body onload="addClickEvent(); setTimers();" onfocus="parent_disable();" onclick="parent_disable();">
+
+<div id="overlay">
+
+</div>
 
 <div class="header">
     <h2>Distributed Auction</h2>
