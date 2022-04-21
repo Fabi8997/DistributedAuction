@@ -17,7 +17,7 @@
 -export([start_server/0, call_server/1]).
 
 %% gen_server callbacks
--export([init/1, handle_call/3, handle_cast/2]).
+-export([handle_call/3, handle_cast/2]).
 
 -define(SERVER, ?MODULE).
 
@@ -70,6 +70,29 @@ handle_call({log, {Pid, Username, Password, ClientNodeName}}, _From, _)->
 %% @doc Handles register requests: calls MnesiaFunctions:register for username checking and user storaging
 handle_call({register, {Pid, Username, Password, ClientNodeName}}, _From, _)->
   {reply, mnesiaFunctions:register(Username, Password, ClientNodeName, Pid), _ = '_'};
+
+handle_call({addAuction, {Id, GoodName, Winner, Timestamp, Amount, Status}}, _From, _)->
+  {reply, mnesiaFunctions:add_auction(Id, GoodName, Winner, Timestamp, Amount, Status), _ = '_'};
+
+handle_call({addGood, {Id, Name, User, Value}}, _From, _)->
+  {reply, mnesiaFunctions:add_good(Id, Name, User, Value), _ = '_'};
+
+handle_call({updateAuction, {Id, Winner, Amount, Status}}, _From, _)->
+  case mnesiaFunctions:is_auction_present(Id) of
+    true->
+      {reply, mnesiaFunctions:update_auction(Id, Winner, Amount, Status), _ = '_'};
+    _->
+      {reply, false, _ = '_'}
+    end;
+
+handle_call({updateGood, {Id, User, Value}}, _From, _)->
+  case mnesiaFunctions:is_good_present(Id) of
+    true->
+      {reply, mnesiaFunctions:update_good(Id, User, Value), _ = '_'};
+    _->
+      {reply, false, _ = '_'}
+  end;
+
 
 handle_call(_, _From, _) ->
   {reply, false, _ = '_'}.

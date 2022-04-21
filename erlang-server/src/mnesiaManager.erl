@@ -10,9 +10,10 @@
 -author("Stefano").
 
 %% API
--export([init/0, login/4, register/4, all_user/0, readTest/1, insert_new_message/3,
-  all_messages/0, get_user_related_messages/1, retrieve_nodename/1, retrieve_pid/1,
-  is_user_present/1]).
+-export([init/0, login/4, register/5, all_user/0, readTest/1, insert_new_message/3,
+  add_user/5, all_messages/0, get_user_related_messages/1, retrieve_nodename/1, retrieve_pid/1,
+  update_auction/4, update_good/3, readTest2/1, readTest3/1,
+  add_credit/2, add_auction/6, add_good/4, is_auction_present/1, is_good_present/1, is_user_present/1]).
 
 -include_lib("stdlib/include/qlc.hrl").
 -include("headers/records.hrl").
@@ -98,6 +99,19 @@ login(Username, Password, NodeName, Pid) ->
       end,
   mnesia:activity(transaction, F).
 
+add_credit(Username, Credit) ->
+  F = fun() ->
+    case mnesia:read({users, Username}) =:= [] of
+      false -> % User present
+        %% If the user is present I add the credit
+        update_credit(Username, Credit),
+        true;
+      true ->
+        false
+    end
+      end,
+  mnesia:activity(transaction, F).
+
 is_user_present(Username) ->
   F = fun() ->
     case mnesia:read({users, Username}) =:= [] of
@@ -109,11 +123,11 @@ is_user_present(Username) ->
       end,
   mnesia:activity(transaction, F).
 
-register(Username, Password, NodeName, Pid) ->
+register(Username, Password, Credit, NodeName, Pid) ->
   F = fun() ->
     case mnesia:read({users, Username}) =:= [] of
       true -> % User not present
-        add_user(Username, Password, NodeName, Pid),
+        add_user(Username, Password, Credit, NodeName, Pid),
         true;
       false ->
         false
@@ -153,10 +167,13 @@ retrieve_pid(Username) ->
 %%% AUCTION OPERATIONS
 %%%===================================================================
   
-  add_auction(Id, GoodName, Winner, Timestamp, Amount, Status) ->
+add_auction(Id, GoodName, Winner, Timestamp, Amount, Status) ->
   Fun = fun() ->
-    mnesia:write(#auctions{idAuction = id,
+    mnesia:write(#auctions{idAuction = Id,
       goodName = GoodName,
+      winner = Winner,
+      timestamp = Timestamp,
+      amount = Amount,
       status = Status
     })
         end,
@@ -180,7 +197,7 @@ is_auction_present(Id) ->
       end,
   mnesia:activity(transaction, F).
 
-readTest(Id) ->
+readTest2(Id) ->
   F = fun() ->
     mnesia:read({auctions, Id})
       end,
@@ -191,7 +208,7 @@ readTest(Id) ->
 %%% GOOD OPERATIONS
 %%%===================================================================
   
-   add_good(Id, Name, User, Value) ->
+add_good(Id, Name, User, Value) ->
   Fun = fun() ->
     mnesia:write(#goods{idGood = Id,
 	  name = Name,
@@ -220,7 +237,7 @@ is_good_present(Id) ->
   mnesia:activity(transaction, F).
 
 
-readTest(Id) ->
+readTest3(Id) ->
   F = fun() ->
     mnesia:read({goods, Id})
       end,
