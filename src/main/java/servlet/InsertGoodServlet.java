@@ -1,5 +1,7 @@
 package servlet;
 
+import dto.GoodDTO;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -37,14 +39,32 @@ public class InsertGoodServlet extends HttpServlet {
             }else{
                 System.out.println("Receiving the new good info...");
 
-                System.out.println("Good inserted");
-                System.out.println("Name: "+request.getParameter("nameGood"));
-                System.out.println("Description: "+request.getParameter("description"));
+                String name = request.getParameter("nameGood");
+                String description = request.getParameter("description");
+                String owner = session.getAttribute("user").toString();
+
+                GoodDTO good = new GoodDTO(name, description, owner);
+                System.out.println(good);
 
                 // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
+                /*
+                    if(DBManager.insert(good){
+                        //if no errors occur then it goes to the confirmation page!
+                        targetJSP = "/pages/jsp/confirm_new_good.jsp";
+                    }else{
+                        //redirect to the previous page with an error msg!
+                        String targetJSP = "/pages/jsp/new_good.jsp";
+                        request.setAttribute("error", "Something has gone wrong!");
+                    }
+                */
 
-
+                // TODO: 24/04/2022 Substitute this with the commented part
+                //Commenting and use this only for try
                 String targetJSP = "/pages/jsp/confirm_new_good.jsp";
+                //String targetJSP = "/pages/jsp/new_good.jsp";
+                //request.setAttribute("error", "Something has gone wrong!");
+
+
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }

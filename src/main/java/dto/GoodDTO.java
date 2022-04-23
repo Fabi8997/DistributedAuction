@@ -7,6 +7,12 @@ public class GoodDTO {
     GoodStatus status;
     String owner;
 
+    public GoodDTO(String name, String description, String owner) {
+        this.name = name;
+        this.description = description;
+        this.owner = owner;
+    }
+
     public GoodDTO(String id, String name, String description, GoodStatus status, String owner) {
         this.id = id;
         this.name = name;
@@ -58,4 +64,16 @@ public class GoodDTO {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    @Override
+    public String toString() {
+        return "GoodDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", owner='" + owner + '\'' +
+                '}';
+    }
 }
+

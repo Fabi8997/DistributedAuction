@@ -11,18 +11,21 @@
 <div class="newFormCard">
     <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/InsertGoodServlet">
         <label>
-            <input type="text" name="nameGood" placeholder="Insert Name">
+            <input type="text" name="nameGood" placeholder="Insert Name" maxlength="15" required>
         </label>
         <label>
-            Description:
-            <textarea placeholder="Insert a description of the good" rows="4" name="description"></textarea>
+            <textarea placeholder="Insert a description of the good" rows="4" name="description" required></textarea>
         </label>
-        <%
-            // TODO: 20/04/2022 Add an if to distinguish between goods on auctions or none!
-        %>
         <input type="submit" class="login login-submit" value="Insert good" name="start_auction">
     </form>
     <button id="back_btn" class="login login-submit" value="back" name="back" onclick="reloadAndClose()">Back</button>
+    <%
+        if(request.getAttribute("error") != null){
+    %>
+    <p id="error"><%= request.getAttribute("error")%></p>
+    <% }else if(request.getAttribute("info") != null){%>
+    <p id="info"><%= request.getAttribute("info")%></p>
+    <% }%>
 </div>
 </body>
 </html>
