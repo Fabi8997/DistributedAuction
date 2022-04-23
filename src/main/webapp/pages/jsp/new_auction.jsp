@@ -1,19 +1,16 @@
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/indexStyle.css">
     <title>Start Auction</title>
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
+    <script src="<%= request.getContextPath() %>/javascript/utils.js"></script>
     <%
+        // TODO: 23/04/2022 Get the good from the idGodd!
         String idGood = (request.getAttribute("idGood") != null)?(String) request.getAttribute("idGood"):request.getParameter("idGood");
-        String timestamp = "Apr 18, 2022 23:31:00"; // TODO: 19/04/2022 Take this from the auction object dto retrieved from mnesia
+        //String timestamp = "Apr 18, 2022 23:31:00"; // TODO: 19/04/2022 Take this from the auction object dto retrieved from mnesia
     %>
-    <script>
-
-        function prova(){
-            window.opener.location.href = "<%= request.getContextPath() %>/StartAuctionServlet";
-            window.close();
-        }
-    </script>
 </head>
 <body>
 
@@ -44,8 +41,9 @@
         %>
         <input type="submit" class="login login-submit" value="Start auction" name="start_auction">
     </form>
-
+    <button id="back_btn" class="login login-submit" value="back" name="back" onclick="reloadAndClose()">Back</button>
 </div>
 
 </body>
+
 </html>

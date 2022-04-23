@@ -2,8 +2,10 @@
 var timersArray = [];
 
 function initializeTimersArray(){
-    for(var i = 0; i < document.getElementsByClassName("timer").length; i++){
-        timersArray[i] = document.getElementById("timer"+i);
+    const timersElements = document.getElementsByClassName("timer");
+    console.log(timersElements);
+    for(var i = 0; i < timersElements.length; i++){
+        timersArray[i] = timersElements.item(i);
     }
 }
 
@@ -40,8 +42,8 @@ function setTimers() {
 
     initializeTimersArray();
 
-    for(var i = 0; i < timersArray.length; i++){
-        startCountdown(new Date("Apr 27, 2022 23:31:"+i*3).getTime(), timersArray[i]);
+    for(let i = 0; i < timersArray.length; i++){
+            startCountdown(new Date("Apr 27, 2022 23:31:"+i*3).getTime(), timersArray[i]);
     }
 }
 

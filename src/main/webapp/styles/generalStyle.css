@@ -1,5 +1,4 @@
 body {
-    font-size: 28px;
     margin: 0;
     background-color: rgba(84, 116, 159, 0.57);
 }
@@ -13,7 +12,7 @@ ul {
     background-color: #141E27;
     position: sticky;
     top: 0;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 li {
@@ -51,6 +50,7 @@ li a:hover {
 }
 
 table {
+    font-size: 16px;
     border: 1px solid #ccc;
     border-collapse: collapse;
     margin: 0;
@@ -96,7 +96,7 @@ table th {
     background-position: 10px 12px;
     background-repeat: no-repeat;
     background-size: 20px;
-    width: 100%;
+    width: 70%;
     font-size: 16px;
     padding: 12px 20px 12px 40px;
     border: 1px solid #EEEDDE;
@@ -213,4 +213,25 @@ table th {
     left: 0;
     z-index: 100;
     -webkit-filter: blur(5px);
+}
+
+#insertGood {
+
+    font-size: 17px;
+    width: 22%;
+    display: inline-block;
+    float: right;
+    padding: 12px 20px 12px 20px;
+    margin-top: 12px;
+    text-align: center;
+    border: 0;
+    color: #fff;
+    text-shadow: 0 1px rgba(0,0,0,0.1);
+    background-color: #54749f;
+}
+
+#insertGood:hover{
+    border: 0;
+    text-shadow: 0 1px rgba(0,0,0,0.3);
+    background-color: #486286;
 }
