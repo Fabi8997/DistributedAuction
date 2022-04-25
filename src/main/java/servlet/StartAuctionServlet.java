@@ -1,5 +1,7 @@
 package servlet;
 
+import dto.AuctionDTO;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -38,19 +40,39 @@ public class StartAuctionServlet extends HttpServlet {
             }else{
                 System.out.println("Receiving the new auction info...");
 
-                System.out.println("auction started");
-                System.out.println("idGood: "+request.getParameter("idGood"));
-                System.out.println("name: "+request.getParameter("nameGood"));
-                System.out.println("description: "+request.getParameter("description"));
-                System.out.println("seller: "+session.getAttribute("user"));
-                System.out.println("price: "+request.getParameter("startPrice"));
-                System.out.println("start date: "+request.getParameter("datetime"));
-                System.out.println("duration: "+request.getParameter("duration"));
+                String idGood = request.getParameter("idGood");
+                String user = (String)session.getAttribute("user");
+                String startPrice = request.getParameter("startPrice");
+                String datetime = request.getParameter("datetime");
+                String duration = request.getParameter("duration");
+
+                //Generate the auction to be passed to the db manager!
+                AuctionDTO auction = new AuctionDTO(idGood,user,startPrice,datetime,duration);
+
+                System.out.println(auction);
 
                 // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
+                //Change the status value on the db
+                /*
+                    if(DBManager.startAuction(auction){
+                        //if no errors occur then it goes to the confirmation page!
+                        targetJSP = "/pages/jsp/confirm_new_auction.jsp";
+                        System.out.println("auction started");
+                    }else{
+                        //redirect to the previous page with an error msg!
+                        String targetJSP = "/pages/jsp/new_auction.jsp";
+                        request.setAttribute("error", "Something has gone wrong!");
+                    }
+                */
 
+                System.out.println("auction started");
 
+                // TODO: 24/04/2022 Substitute this with the commented part
+                //Commenting and use this only for try
                 String targetJSP = "/pages/jsp/confirm_start_auction.jsp";
+                //String targetJSP = "/pages/jsp/new_auction.jsp";
+                //request.setAttribute("error", "Something has gone wrong!");
+
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }

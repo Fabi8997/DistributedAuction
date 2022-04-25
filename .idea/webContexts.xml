@@ -10,6 +10,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/jsp/auctions.jsp" value="file://$PROJECT_DIR$/src/main/webapp/pages/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/jsp/goods.jsp" value="file://$PROJECT_DIR$/src/main/webapp/pages/jsp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/jsp/homepage.jsp" value="file://$PROJECT_DIR$/src/main/webapp/pages/jsp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/pages/jsp/new_auction.jsp" value="file://$PROJECT_DIR$/src/main/webapp/pages/jsp" />
       </map>
     </option>
   </component>

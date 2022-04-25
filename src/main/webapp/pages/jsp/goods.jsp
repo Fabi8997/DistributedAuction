@@ -117,7 +117,7 @@
 
 <div class="auction_content">
 
-    <h3>Test dynamic auction list</h3>
+    <h3>Your goods:</h3>
 
     <div id="auction_content_actions">
         <label for="myInput"></label><input style= "background-image: url('<%= request.getContextPath() %>/images/searchicon.png');" type="text" id="myInput" onkeyup="searchName()" placeholder="Search for names..">

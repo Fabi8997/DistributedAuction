@@ -2,26 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Title</title>
-    <script>
-
-        setTimeout(reloadAndClose,3000);
-
-        function reloadAndClose(){
-            window.opener.location.reload();
-            window.close();
-        }
-    </script>
+    <title>Auction started!</title>
+    <script src="<%= request.getContextPath() %>/javascript/utils.js"></script>
 </head>
-<body>
-  <%
-      //Retrieve the result of the req from the request attribute of the servet
-      /*if(req.state){
-        <p>Auction Started Correctly!</p>
-      }else{
-        <p>Something has gone wrong, retry!</p>
-      }*/
-  %>
+<body onload="reloadAndClose()">
     <p>Auction started!</p>
 </body>
 </html>
