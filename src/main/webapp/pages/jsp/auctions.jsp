@@ -1,4 +1,6 @@
-<html lang="it">
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>Auctions</title>
@@ -6,6 +8,8 @@
     <%
         int iterations =(int)request.getAttribute("iterations");
     %>
+
+    <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
 
     <script>
         function myFunction() {
@@ -40,18 +44,17 @@
                 const row = document.getElementById("row-"+i.toString());
 
                 row.addEventListener("click", () => {
-                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood=row-"+i.toString();
+                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood="+i.toString();
                 });
             }
         }
     </script>
 
 </head>
-<body onload="addClickEvent()">
+<body onload="addClickEvent(); setTimers()">
 
 <div class="header">
     <h2>Distributed Auction</h2>
-    <p>We have to change the title for sure.</p>
 </div>
 
 <ul class="topnav">
@@ -76,18 +79,19 @@
             <th scope="col">Column1</th>
             <th scope="col">Column2</th>
             <th scope="col">Column3</th>
-            <th scope="col">Column4</th>
+            <th scope="col">Countdown</th>
         </tr>
         </thead>
         <tbody>
         <%
             for(int i = 0; i < iterations; i++) {
+                // TODO: 20/04/2022 insert the data ordered by timestamp, so from the lower value to the higher
         %>
         <tr id = "row-<%=i%>">
             <td>Data<%=i%></td>
             <td>Data<%=i%></td>
             <td>Data<%=i%></td>
-            <td>Data<%=i%></td>
+            <td class="timer" id="timer<%=i%>"></td>
         </tr>
         <% } %>
         </tbody>

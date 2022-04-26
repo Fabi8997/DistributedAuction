@@ -5,8 +5,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "HomepageServlet", value = "/HomepageServlet")
-public class HomepageServlet extends HttpServlet {
+@WebServlet(name = "AddCreditServlet", value = "/AddCreditServlet")
+public class AddCreditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -36,14 +36,24 @@ public class HomepageServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }else{
-                System.out.println("Sending the homepage...");
+                System.out.println("Adding the sum...");
 
-                //Open the homepage
-                String targetJSP = "/pages/jsp/homepage.jsp";
+                //Send the offer to the server and reload the page
+                // TODO: 15/04/2022 Add the increment of the credit!
+
+                /*if(add credit){
+                    request.setAttribute("info", "Credit added correctly!");
+                }else{
+                    request.setAttribute("error", "Sorry, something has gone wrong. Retry!");
+                }*/
+
+                //Reload the page to trigger the change of the credit in the jsp file
+                String targetJSP = "/pages/jsp/credit.jsp";
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }
         }
+
     }
 
     @Override

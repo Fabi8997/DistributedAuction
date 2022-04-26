@@ -1,4 +1,6 @@
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/indexStyle.css">
     <title>Registration</title>
@@ -24,6 +26,7 @@
         </label>
         <input type="submit" name="signup" class="login login-submit" value="Sign Up">
     </form>
+    <% // TODO: 15/04/2022 ADD the error (?) %>
 </div>
 
 <script>
@@ -32,7 +35,7 @@
 
     function validatePassword(){
         if(password.value !== confirm_password.value) {
-            confirm_password.setCustomValidity("Passwords Don't Match");
+            confirm_password.setCustomValidity("Passwords don't match");
         } else {
             confirm_password.setCustomValidity('');
         }

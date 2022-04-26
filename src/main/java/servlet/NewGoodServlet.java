@@ -5,11 +5,10 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "HomepageServlet", value = "/HomepageServlet")
-public class HomepageServlet extends HttpServlet {
+@WebServlet(name = "NewGoodServlet", value = "/NewGoodServlet")
+public class NewGoodServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         HttpSession session = request.getSession(false);
         if (session == null) {
             System.out.println("Session not exists!");
@@ -36,10 +35,12 @@ public class HomepageServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }else{
-                System.out.println("Sending the homepage...");
+                System.out.println("Sending the new good page...");
 
-                //Open the homepage
-                String targetJSP = "/pages/jsp/homepage.jsp";
+                // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
+
+
+                String targetJSP = "/pages/jsp/new_good.jsp";
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }

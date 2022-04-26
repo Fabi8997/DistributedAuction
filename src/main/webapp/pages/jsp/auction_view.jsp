@@ -1,9 +1,16 @@
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>View Auction</title>
+    <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
+    <%
+        String idGood = (request.getAttribute("idGood") != null)?(String) request.getAttribute("idGood"):request.getParameter("idGood");
+        String timestamp = "Apr 18, 2022 23:31:00"; // TODO: 19/04/2022 Take this from the auction object dto retrieved from mnesia
+    %>
 </head>
-<body>
+<body onload="setTimer('<%=timestamp%>')">
 
 <div class="header">
     <h2>Distributed Auction</h2>
@@ -40,12 +47,13 @@
         </tr>
         <tr>
             <th>Time left:</th>
-            <td>123-45-678</td>
+            <td id="timer"></td>
         </tr>
     </table>
 
 
-    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet?idGood=prova">
+    <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet">
+        <input type="hidden" name="idGood" value="<%=idGood%>">
         <label for="offerInput"></label><input id="offerInput" type="text" placeholder="Insert your offer.." name="offer">
         <button type="submit">OFFER</button>
     </form>

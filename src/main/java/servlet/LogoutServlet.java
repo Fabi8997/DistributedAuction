@@ -9,11 +9,18 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO: 10/04/2022 Gestire la sessione in ogni pagina!
+
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            System.out.println("invalidating session");
+            session.invalidate();
+        }
 
         String targetJSP = "index.jsp";
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
         requestDispatcher.forward(request,response);
+
+
     }
 
     @Override
