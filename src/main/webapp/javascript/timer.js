@@ -30,6 +30,14 @@ function startCountdown(countdownDate, timer) {
         timer.innerHTML = days + "d " + hours + "h "
             + minutes + "m " + seconds + "s ";
 
+        if (distance < 120000) {
+            timer.style.color = 'Orange';
+        }
+
+        if (distance < 30000) {
+            timer.style.color = 'Red';
+        }
+
         // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(x);
@@ -38,12 +46,12 @@ function startCountdown(countdownDate, timer) {
     }, 1000);
 }
 
-function setTimers() {
+function setTimers(timestampArray) {
 
     initializeTimersArray();
 
     for(let i = 0; i < timersArray.length; i++){
-            startCountdown(new Date("Apr 27, 2022 23:31:"+i*3).getTime(), timersArray[i]);
+            startCountdown(new Date(timestampArray[i]).getTime(), timersArray[i]);
     }
 }
 

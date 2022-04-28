@@ -7,34 +7,30 @@ public class AuctionDTO {
     String user;
     String startPrice;
     String datetime;
-    String duration;
     String finalPrice;
 
-    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime, String duration, String finalPrice) {
+    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime, String finalPrice) {
         this.idAuction = idAuction;
         this.idGood = idGood;
         this.user = user;
         this.startPrice = startPrice;
         this.datetime = datetime;
-        this.duration = duration;
         this.finalPrice = finalPrice;
     }
 
-    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime, String duration) {
+    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime) {
         this.idAuction = idAuction;
         this.idGood = idGood;
         this.user = user;
         this.startPrice = startPrice;
         this.datetime = datetime;
-        this.duration = duration;
     }
 
-    public AuctionDTO(String idGood, String user, String startPrice, String datetime, String duration) {
+    public AuctionDTO(String idGood, String user, String startPrice, String datetime) {
         this.idGood = idGood;
         this.user = user;
         this.startPrice = startPrice;
         this.datetime = datetime;
-        this.duration = duration;
     }
 
     public String getIdAuction() {
@@ -77,14 +73,6 @@ public class AuctionDTO {
         this.datetime = datetime;
     }
 
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     public String getFinalPrice() {
         return finalPrice;
     }
@@ -101,7 +89,6 @@ public class AuctionDTO {
                 ", user='" + user + '\'' +
                 ", startPrice='" + startPrice + '\'' +
                 ", datetime='" + datetime + '\'' +
-                ", duration='" + duration + '\'' +
                 ", finalPrice='" + finalPrice + '\'' +
                 '}';
     }

@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.time.*;
 
 @WebServlet(name = "StartAuctionServlet", value = "/StartAuctionServlet")
 public class StartAuctionServlet extends HttpServlet {
@@ -43,8 +44,15 @@ public class StartAuctionServlet extends HttpServlet {
                 String idGood = request.getParameter("idGood");
                 String user = (String)session.getAttribute("user");
                 String startPrice = request.getParameter("startPrice");
-                String datetime = request.getParameter("datetime");
                 String duration = request.getParameter("duration");
+
+                Instant instant = Instant.now().plus(Duration.ofHours(Long.parseLong(duration)));
+                LocalDateTime localDateTime = LocalDateTime.ofInstant(instant,ZoneOffset.of("+02:00"));
+                String datetime = localDateTime.toString();
+
+                // TODO: 27/04/2022 use this to instantiate the server! It's the number of seconds until the end of the auction
+                System.out.println(localDateTime.toEpochSecond(ZoneOffset.of("+02:00"))-Instant.now().getEpochSecond());
+
 
                 //Generate the auction to be passed to the db manager!
                 AuctionDTO auction = new AuctionDTO(idGood,user,startPrice,datetime,duration);

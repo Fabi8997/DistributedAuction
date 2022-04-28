@@ -104,6 +104,18 @@ table th {
     margin-top: 12px;
 }
 
+#myInputAuct{
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    background-size: 20px;
+    width: 95%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #EEEDDE;
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
 .auction_content{
     margin-left: 10%;
     margin-right: 10%;
