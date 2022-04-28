@@ -22,6 +22,22 @@
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
 
     <script>
+
+        let timestampArray = [];
+
+        <%int j = 0;
+        for(GoodDTO good: goods){
+            if(good.getStatus().equals(GoodStatus.IN_AUCTION)){
+                // TODO: 27/04/2022 get the goods timestamp from the dbmanager passing the GoodId
+        %>
+        //timestampArray[<%//<--- put the '='  i%>] = "<%//<--- put the '=' (DBManager.getAuctionByGood(goods.get(i).getGoodID())).getDatetime()%>";
+        timestampArray[<%=j++%>] = "2022-05-27T06:22:30.781785";
+
+        <%  }
+        }%>
+
+        console.log(timestampArray);
+
         //variable to track the popupwindow
         let popupWindow = null;
 
@@ -95,7 +111,7 @@
     </script>
 
 </head>
-<body onload="addClickEvent(); setTimers();" onfocus="parent_disable();" onclick="parent_disable();">
+<body onload="addClickEvent(); setTimers(timestampArray);" onfocus="parent_disable();" onclick="parent_disable();">
 
 <div id="overlay">
 

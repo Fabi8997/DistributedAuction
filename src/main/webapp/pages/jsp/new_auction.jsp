@@ -1,7 +1,10 @@
 <%@ page import="dto.GoodDTO" %>
 <%@ page import="dto.GoodStatus" %>
 <%@ page import="dto.AuctionDTO" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.temporal.ChronoUnit" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,15 +45,12 @@
             //AuctionDTO auction = DBManager.getAuction(UserDTO,GoodDTO);
 
             //DELETE THIS, I'm using this only for test!
-            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-30T23:49","4");
+            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-27T06:22:30.781785");
+            String datetime = LocalDateTime.parse(auction.getDatetime()).truncatedTo(ChronoUnit.MINUTES).toString();
         %>
         <label>
-            Starting date:
-            <input type="datetime-local" name="datetime" value="<%=auction.getDatetime()%>" disabled/>
-        </label>
-        <label>
-            Duration:
-            <input type="number" value="<%=auction.getDuration()%>" name="duration" disabled/>
+            End date:
+            <input type="datetime-local" name="datetime" value="<%=datetime%>" disabled/>
         </label>
         <label>
             Starting price:
@@ -58,16 +58,12 @@
         </label>
         <%}else if(good.getStatus().equals(GoodStatus.NOT_IN_AUCTION)){%>
         <label>
-            Starting date:
-            <input type="datetime-local" name="datetime" required/>
-        </label>
-        <label>
             Duration:
-            <input type="number" min="0.00" max="6.00" step="1" value="0" name="duration" required/>
+            <input type="number" min="1" max="100" step="1" value="1" name="duration" required/>
         </label>
         <label>
             Starting price:
-            <input type="number" min="0.00" max="10000.00" step="0.10" value="0.00" name="startPrice" required/>
+            <input type="number" min="1.00" max="10000.00" step="0.50" value="1.00" name="startPrice" required/>
         </label>
         <input type="submit" class="login login-submit" value="Start auction" name="start_auction">
         <%}else{
@@ -75,7 +71,7 @@
             //AuctionDTO auction = DBManager.getAuction(User,Good);
 
             //DELETE THIS, I'm using this only for test!
-            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-30T23:49","4","50");
+            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-26T22:50:41.654542800Z", "50");
         %>
         <label>
             <input type="text" name="Status" placeholder="status" value="SOLD" disabled>
