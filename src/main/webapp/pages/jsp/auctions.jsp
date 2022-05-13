@@ -11,13 +11,17 @@
 
     <%
         ArrayList<AuctionDTO> auctions = new ArrayList<>();
-        auctions.add(new AuctionDTO("112133","13232","Filippo","10.0","2022-04-27T23:41:41.781785"));
-        auctions.add(new AuctionDTO("123444","86676","Andrea","22.0","2022-04-30T23:00"));
-        auctions.add(new AuctionDTO("144544","17667","Bruno","300.0","2022-05-12T23:10"));
-        auctions.add(new AuctionDTO("111124","15454","Andrea","40.0","2022-05-01T12:30"));
-        auctions.add(new AuctionDTO("123254","12123","Nicola","12.0","2022-05-21T23:45"));
-        auctions.add(new AuctionDTO("887674","56511","Andrea","12.5","2022-06-12T11:20"));
-        auctions.add(new AuctionDTO("342344","21111","Filippo","11.2","2022-05-09T14:50"));
+
+        auctions.add(new AuctionDTO("131213","31213","600000","15.0","Fabiano"));
+        auctions.add(new AuctionDTO("123444","86676","800000","22.0","Andrea"));
+        auctions.add(new AuctionDTO("144544","17667","150000","300.0","Paolo"));
+        auctions.add(new AuctionDTO("111124","15454","2121212","40.0","Bruno"));
+        auctions.add(new AuctionDTO("123254","12123","900000","12.0","Chiara"));
+        auctions.add(new AuctionDTO("321312","23132","4554455","15.0","Fabiano"));
+        auctions.add(new AuctionDTO("535355","43343","9898912","22.0","Andrea"));
+        auctions.add(new AuctionDTO("634622","54543","1050000","300.0","Paolo"));
+        auctions.add(new AuctionDTO("745545","54544","1300000","40.0","Bruno"));
+        auctions.add(new AuctionDTO("755445","53211","932000","12.0","Chiara"));
     %>
 
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
@@ -27,7 +31,7 @@
         let timestampArray = [];
 
         <% for(int i = 0; i < auctions.size(); i++){%>
-            timestampArray[<%=i%>] = "<%=auctions.get(i).getDatetime()%>";
+            timestampArray[<%=i%>] = "<%=utils.Utils.datetimeFromNow(auctions.get(i).getDuration())%>";
         <%}%>
 
         console.log(timestampArray);
@@ -108,8 +112,8 @@
             <%// TODO: 26/04/2022 change getIdGood with DBManager.getGoodById(auction.getIdGood)
               // Oppure conservare il nome del good nella tabella di mnesia!%>
             <td><%=auctions.get(i).getIdGood()%></td>
-            <td><%=auctions.get(i).getUser()%></td>
-            <td><%=auctions.get(i).getStartPrice()%></td>
+            <td><%=auctions.get(i).getSeller()%></td>
+            <td><%=auctions.get(i).getInitialPrice()%></td>
             <td class="timer" id="timer<%=i%>"></td>
         </tr>
         <% } %>

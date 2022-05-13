@@ -1,5 +1,8 @@
 package servlet;
 
+import com.ericsson.otp.erlang.OtpConnection;
+import communication.OtpErlangCommunication;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -45,6 +48,10 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user",user);
                 }
             }
+
+            /*if(session.getAttribute("otpConnection") == null){
+                session.setAttribute("otpConnection", OtpErlangCommunication.getConnection(user));
+            }*/
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(request,response);

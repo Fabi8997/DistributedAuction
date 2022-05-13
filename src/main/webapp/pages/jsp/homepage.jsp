@@ -6,10 +6,11 @@
 <head>
     <%
         ArrayList<AuctionDTO> auctions = new ArrayList<>();
-        auctions.add(new AuctionDTO("123444","86676","Andrea","22.0","2022-04-30T23:00"));
-        auctions.add(new AuctionDTO("144544","17667","Bruno","300.0","2022-05-12T23:10"));
-        auctions.add(new AuctionDTO("111124","15454","Andrea","40.0","2022-05-01T12:30"));
-        auctions.add(new AuctionDTO("123254","12123","Nicola","12.0","2022-05-21T23:45"));
+        auctions.add(new AuctionDTO("131213","31213","600000","15.0","Fabiano"));
+        auctions.add(new AuctionDTO("123444","86676","800000","22.0","Andrea"));
+        auctions.add(new AuctionDTO("144544","17667","150000","300.0","Paolo"));
+        auctions.add(new AuctionDTO("111124","15454","100000","40.0","Bruno"));
+        auctions.add(new AuctionDTO("123254","12123","900000","12.0","Chiara"));
     %>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>homepage</title>
@@ -19,7 +20,7 @@
         let timestampArray = [];
 
         <% for(int i = 0; i < auctions.size(); i++){%>
-        timestampArray[<%=i%>] = "<%=auctions.get(i).getDatetime()%>";
+        timestampArray[<%=i%>] = "<%=utils.Utils.datetimeFromNow(auctions.get(i).getDuration())%>";
         <%}%>
 
         function addClickEvent() {

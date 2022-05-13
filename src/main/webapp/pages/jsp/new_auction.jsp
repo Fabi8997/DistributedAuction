@@ -41,20 +41,20 @@
             <textarea placeholder="Insert a description of the good" rows="4" name="description" readonly><%=good.getDescription()%></textarea>
         </label>
         <% if(good.getStatus().equals(GoodStatus.IN_AUCTION)){
-            // TODO: 25/04/2022
-            //AuctionDTO auction = DBManager.getAuction(UserDTO,GoodDTO);
+            // TODO: 25/04/2022 Retrieve the status of the auction from the erlang server!
+            //AuctionDTO auction = Communication.getStatus(auctionID);
 
             //DELETE THIS, I'm using this only for test!
-            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-27T06:22:30.781785");
-            String datetime = LocalDateTime.parse(auction.getDatetime()).truncatedTo(ChronoUnit.MINUTES).toString();
+            AuctionDTO auction = new AuctionDTO("123254",idGood,"900000","12.0",user);
+            String duration = LocalDateTime.parse(auction.getDuration()).truncatedTo(ChronoUnit.MINUTES).toString();
         %>
         <label>
             End date:
-            <input type="datetime-local" name="datetime" value="<%=datetime%>" disabled/>
+            <input type="datetime-local" name="duration" value="<%=duration%>" disabled/>
         </label>
         <label>
             Starting price:
-            <input type="number" value="<%=auction.getStartPrice()%>" name="startPrice" disabled/>
+            <input type="number" value="<%=auction.getInitialPrice()%>" name="startPrice" disabled/>
         </label>
         <%}else if(good.getStatus().equals(GoodStatus.NOT_IN_AUCTION)){%>
         <label>
@@ -71,14 +71,14 @@
             //AuctionDTO auction = DBManager.getAuction(User,Good);
 
             //DELETE THIS, I'm using this only for test!
-            AuctionDTO auction = new AuctionDTO(idGood,"11111",user,"10.0","2022-04-26T22:50:41.654542800Z", "50");
+            AuctionDTO auction = new AuctionDTO("12345",idGood,"900000","30.0","50.0","Andrea","Fabiano","Finished");
         %>
         <label>
             <input type="text" name="Status" placeholder="status" value="SOLD" disabled>
         </label>
         <label>
             Final price:
-            <input type="number" value="<%=auction.getFinalPrice()%>" name="finalPrice" disabled/>
+            <input type="number" value="<%=auction.getCurrentPrice()%>" name="finalPrice" disabled/>
         </label>
         <%}%>
     </form>
