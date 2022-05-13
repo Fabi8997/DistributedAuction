@@ -9,6 +9,10 @@
         // TODO: 23/04/2022 goods deve essere inizializzato con il valore del db!
         ArrayList<GoodDTO> goods = new ArrayList<>();
 
+
+        //Select your goods from the db and for each retrieve if there is an auction active! the instantiate
+        //the array of goods!!!
+
         //Initialize an example of goods inside the array list
         goods.add(new GoodDTO("148912","Matita","Matita molto bella", GoodStatus.IN_AUCTION, (String) session.getAttribute("user")));
         goods.add(new GoodDTO("173222","Bicchiere","Bicchiere molto bello", GoodStatus.SOLD, (String) session.getAttribute("user")));
@@ -30,7 +34,7 @@
             if(good.getStatus().equals(GoodStatus.IN_AUCTION)){
                 // TODO: 27/04/2022 get the goods timestamp from the dbmanager passing the GoodId
         %>
-        //timestampArray[<%//<--- put the '='  i%>] = "<%//<--- put the '=' (DBManager.getAuctionByGood(goods.get(i).getGoodID())).getDatetime()%>";
+        //timestampArray[<%//<--- put the '='  i%>] = "<%//<--- put the '=' (DBManager.getAuctionByGood(goods.get(i).getGoodID())).getDuration()%>";
         timestampArray[<%=j++%>] = "2022-05-27T06:22:30.781785";
 
         <%  }

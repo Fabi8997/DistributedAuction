@@ -51,6 +51,7 @@ function setTimers(timestampArray) {
     initializeTimersArray();
 
     for(let i = 0; i < timersArray.length; i++){
+        console.log(timestampArray[i], new Date(timestampArray[i]).getTime());
             startCountdown(new Date(timestampArray[i]).getTime(), timersArray[i]);
     }
 }

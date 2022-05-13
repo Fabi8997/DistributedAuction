@@ -1,5 +1,7 @@
 package servlet;
 
+import com.ericsson.otp.erlang.OtpConnection;
+import communication.OtpErlangCommunication;
 import dto.AuctionDTO;
 
 import javax.servlet.*;
@@ -41,24 +43,22 @@ public class StartAuctionServlet extends HttpServlet {
             }else{
                 System.out.println("Receiving the new auction info...");
 
+                String idAuction = "auction12312";
                 String idGood = request.getParameter("idGood");
                 String user = (String)session.getAttribute("user");
                 String startPrice = request.getParameter("startPrice");
                 String duration = request.getParameter("duration");
 
-                Instant instant = Instant.now().plus(Duration.ofHours(Long.parseLong(duration)));
-                LocalDateTime localDateTime = LocalDateTime.ofInstant(instant,ZoneOffset.of("+02:00"));
-                String datetime = localDateTime.toString();
-
                 // TODO: 27/04/2022 use this to instantiate the server! It's the number of seconds until the end of the auction
-                System.out.println(localDateTime.toEpochSecond(ZoneOffset.of("+02:00"))-Instant.now().getEpochSecond());
+                //System.out.println(localDateTime.toEpochSecond(ZoneOffset.of("+02:00"))-Instant.now().getEpochSecond());
 
 
                 //Generate the auction to be passed to the db manager!
-                AuctionDTO auction = new AuctionDTO(idGood,user,startPrice,datetime,duration);
 
+                AuctionDTO auction = new AuctionDTO(idAuction,idGood, Integer.toString(Integer.parseInt(duration)*60*60*1000),startPrice,user);
                 System.out.println(auction);
 
+                OtpErlangCommunication.start_auction(auction);
                 // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
                 //Change the status value on the db
                 /*

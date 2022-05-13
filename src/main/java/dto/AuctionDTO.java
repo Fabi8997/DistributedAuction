@@ -1,95 +1,92 @@
 package dto;
 
+import com.ericsson.otp.erlang.OtpErlangTuple;
+
 public class AuctionDTO {
 
     String idAuction;
     String idGood;
-    String user;
-    String startPrice;
-    String datetime;
-    String finalPrice;
+    String duration;
+    String initialPrice;
+    String currentPrice;
+    String currentWinner;
+    String seller;
+    String status;
 
-    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime, String finalPrice) {
+    public AuctionDTO(String idAuction, String idGood, String duration, String initialPrice, String seller){
         this.idAuction = idAuction;
         this.idGood = idGood;
-        this.user = user;
-        this.startPrice = startPrice;
-        this.datetime = datetime;
-        this.finalPrice = finalPrice;
+        this.duration = duration;
+        this.initialPrice = initialPrice;
+        this.seller = seller;
     }
 
-    public AuctionDTO(String idAuction, String idGood, String user, String startPrice, String datetime) {
+    public AuctionDTO(String idAuction, String idGood, String duration, String initialPrice, String currentPrice, String currentWinner, String seller, String status) {
         this.idAuction = idAuction;
         this.idGood = idGood;
-        this.user = user;
-        this.startPrice = startPrice;
-        this.datetime = datetime;
+        this.duration = duration;
+        this.initialPrice = initialPrice;
+        this.currentPrice = currentPrice;
+        this.currentWinner = currentWinner;
+        this.seller = seller;
+        this.status = status;
     }
 
-    public AuctionDTO(String idGood, String user, String startPrice, String datetime) {
-        this.idGood = idGood;
-        this.user = user;
-        this.startPrice = startPrice;
-        this.datetime = datetime;
+    public AuctionDTO(OtpErlangTuple auctionInfo) {
+        idAuction = auctionInfo.elementAt(0).toString();
+        idGood = auctionInfo.elementAt(1).toString();
+        duration = auctionInfo.elementAt(2).toString();
+        initialPrice = auctionInfo.elementAt(3).toString();
+        currentPrice = auctionInfo.elementAt(4).toString();
+        currentWinner = auctionInfo.elementAt(5).toString();
+        seller = auctionInfo.elementAt(6).toString();
+        status = auctionInfo.elementAt(7).toString();
     }
 
     public String getIdAuction() {
         return idAuction;
     }
 
-    public void setIdAuction(String idAuction) {
-        this.idAuction = idAuction;
-    }
-
     public String getIdGood() {
         return idGood;
     }
 
-    public void setIdGood(String idGood) {
-        this.idGood = idGood;
+    public String getDuration() {
+        return duration;
     }
 
-    public String getUser() {
-        return user;
+    public String getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public String getCurrentPrice() {
+        return currentPrice;
     }
 
-    public String getStartPrice() {
-        return startPrice;
+    public String getCurrentWinner() {
+        return currentWinner;
     }
 
-    public void setStartPrice(String startPrice) {
-        this.startPrice = startPrice;
+    public String getSeller() {
+        return seller;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
-    }
-
-    public String getFinalPrice() {
-        return finalPrice;
-    }
-
-    public void setFinalPrice(String finalPrice) {
-        this.finalPrice = finalPrice;
-    }
 
     @Override
     public String toString() {
         return "AuctionDTO{" +
                 "idAuction='" + idAuction + '\'' +
                 ", idGood='" + idGood + '\'' +
-                ", user='" + user + '\'' +
-                ", startPrice='" + startPrice + '\'' +
-                ", datetime='" + datetime + '\'' +
-                ", finalPrice='" + finalPrice + '\'' +
+                ", duration='" + duration + '\'' +
+                ", initialPrice='" + initialPrice + '\'' +
+                ", currentPrice='" + currentPrice + '\'' +
+                ", currentWinner='" + currentWinner + '\'' +
+                ", seller='" + seller + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
