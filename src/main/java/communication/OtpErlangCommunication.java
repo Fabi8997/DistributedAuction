@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class OtpErlangCommunication {
 
+    // TODO: 20/05/2022 Aggiungere il close ad ogni operazione!
     private static final String cookie = "abcde";
     private static final String remoteNodeId ="auctions_server@localhost";
     private static final String registeredServer = "auction_server";
@@ -23,6 +24,7 @@ public class OtpErlangCommunication {
                 conn.sendRPC(registeredServer, "get_status", new OtpErlangObject[]{new OtpErlangAtom(auction)});
                 OtpErlangObject reply = conn.receiveRPC();
                 System.out.println("Received " + reply);
+                conn.close();
             }
         } catch (IOException | OtpErlangExit | OtpAuthException e) {
             if(conn!= null){
@@ -39,6 +41,7 @@ public class OtpErlangCommunication {
             if(conn != null) {
                 conn.sendRPC(registeredServer, "get_info", new OtpErlangObject[]{new OtpErlangAtom(auction)});
                 OtpErlangObject reply = conn.receiveRPC();
+                conn.close();// TODO: 20/05/2022 test if it's correct
                 if (reply instanceof OtpErlangTuple) {
                     return new AuctionDTO((OtpErlangTuple) reply);
                 }
@@ -61,6 +64,7 @@ public class OtpErlangCommunication {
                 conn.sendRPC(registeredServer,"make_offer",new OtpErlangObject[]{new OtpErlangAtom(auction),msg});
                 OtpErlangObject reply = conn.receiveRPC();
                 System.out.println("Received " + reply);
+                conn.close();
             }
         } catch (IOException | OtpErlangExit | OtpAuthException e) {
             if(conn!= null){
