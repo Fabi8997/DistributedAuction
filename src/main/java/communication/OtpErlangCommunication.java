@@ -9,11 +9,12 @@ public class OtpErlangCommunication {
 
     // TODO: 20/05/2022 Aggiungere il close ad ogni operazione!
     private static final String cookie = "abcde";
-    private static final String remoteNodeId ="auctions_server@localhost";
+    private static final String remoteNodeId ="server@localhost";
     private static final String registeredServer = "auction_server";
     private static final String registeredMasterServer ="auctions_manager";
 
     public static void main(String[] args) {
+        System.out.println(OtpErlangCommunication.get_info(1,"Provaj"));
     }
 
     private static void get_status(String auction,String user){
@@ -34,14 +35,14 @@ public class OtpErlangCommunication {
         }
     }
 
-    private static AuctionDTO get_info(String auction,String user){
+    public static AuctionDTO get_info(int auction,String user){
         OtpConnection conn = null;
         try {
             conn = getConnection(user);
             if(conn != null) {
-                conn.sendRPC(registeredServer, "get_info", new OtpErlangObject[]{new OtpErlangAtom(auction)});
+                conn.sendRPC(registeredServer, "get_info", new OtpErlangObject[]{new OtpErlangInt(auction)});
                 OtpErlangObject reply = conn.receiveRPC();
-                conn.close();// TODO: 20/05/2022 test if it's correct
+                conn.close();
                 if (reply instanceof OtpErlangTuple) {
                     return new AuctionDTO((OtpErlangTuple) reply);
                 }

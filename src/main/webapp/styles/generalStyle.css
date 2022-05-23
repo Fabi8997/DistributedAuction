@@ -155,13 +155,14 @@ table th {
 
 .ViewAuctionContent button, #content button{
     float: left;
-    width: 35%;
+    width: 30%;
     padding: 10px;
     background: #54749f;
     color: #EEEDDE;
     font-size: 17px;
     border: 1px solid #CCC;
     border-left: none;
+    border-right: none;
     cursor: pointer;
 }
 

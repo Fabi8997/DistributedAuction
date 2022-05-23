@@ -8,10 +8,6 @@
 <body>
 
 
-<%
-    // TODO: 09/04/2022 ADD ON EACH SERVLET THE RETRIEVE THE CREDIT!
-%>
-
 <div class="login-card">
     <h1>Sign-Up</h1><br>
     <form method="post" action="<%= request.getContextPath() %>/SignUpServlet">
@@ -26,7 +22,16 @@
         </label>
         <input type="submit" name="signup" class="login login-submit" value="Sign Up">
     </form>
-    <% // TODO: 15/04/2022 ADD the error (?) %>
+    <div class="login-help">
+        <%
+            if(request.getAttribute("error") != null){
+        %>
+        <p id="error"><%= request.getAttribute("error")%></p>
+        <% }else if(request.getAttribute("info") != null){%>
+        <p id="info"><%= request.getAttribute("info")%></p>
+        <% }%>
+        <a href="<%= request.getContextPath() %>/pages/jsp/register.jsp">Register</a>
+    </div>
 </div>
 
 <script>

@@ -1,24 +1,18 @@
 <%@ page import="dto.GoodDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="dto.GoodStatus" %>
+<%@ page import="database.DbManager" %>
+<%@ page import="communication.OtpErlangCommunication" %>
+<%@ page import="dto.AuctionDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%
-        // TODO: 23/04/2022 goods deve essere inizializzato con il valore del db!
-        ArrayList<GoodDTO> goods = new ArrayList<>();
-
-
-        //Select your goods from the db and for each retrieve if there is an auction active! the instantiate
-        //the array of goods!!!
-
-        //Initialize an example of goods inside the array list
-        goods.add(new GoodDTO("148912","Matita","Matita molto bella", GoodStatus.IN_AUCTION, (String) session.getAttribute("user")));
-        goods.add(new GoodDTO("173222","Bicchiere","Bicchiere molto bello", GoodStatus.SOLD, (String) session.getAttribute("user")));
-        goods.add(new GoodDTO("128547","Macchina","Macchina molto bella", GoodStatus.NOT_IN_AUCTION, (String) session.getAttribute("user")));
-        goods.add(new GoodDTO("138323","Lampada","Lampada molto bella", GoodStatus.IN_AUCTION, (String) session.getAttribute("user")));
-
+        String user = (String) session.getAttribute("user");
+        System.out.println("Retrieving the information for "+user+"...");
+        ArrayList<GoodDTO> goods = DbManager.getUserGoods(user);
+        double credit = DbManager.getCredit(user);
     %>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>goods</title>
@@ -29,13 +23,14 @@
 
         let timestampArray = [];
 
-        <%int j = 0;
+        <%
+        int j = 0;
         for(GoodDTO good: goods){
-            if(good.getStatus().equals(GoodStatus.IN_AUCTION)){
-                // TODO: 27/04/2022 get the goods timestamp from the dbmanager passing the GoodId
+            if(DbManager.inAuction(user,good.getGoodId())){
+                int auctionId = DbManager.getAuctionFromGood(good.getGoodId(),user);
+                AuctionDTO auction = OtpErlangCommunication.get_info(auctionId,user);
         %>
-        //timestampArray[<%//<--- put the '='  i%>] = "<%//<--- put the '=' (DBManager.getAuctionByGood(goods.get(i).getGoodID())).getDuration()%>";
-        timestampArray[<%=j++%>] = "2022-05-27T06:22:30.781785";
+        timestampArray[<%=j++%>] = "<%=utils.Utils.datetimeFromNow(auction.getDuration())%>";
 
         <%  }
         }%>
@@ -132,7 +127,7 @@
     <li id="logout"><a href="<%= request.getContextPath() %>/LogoutServlet" >
         <img src="<%= request.getContextPath() %>/images/logout3.png" alt="logout">
     </a></li>
-    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
+    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
 <div class="auction_content">
@@ -158,14 +153,14 @@
             for(int i = 0; i < goods.size(); i++) {
         %>
         <tr id = "row-<%=i%>">
-            <td style="display:none;"><input class="idGood" type="hidden" name="idGood" value="<%=goods.get(i).getId()%>"></td>
-            <td><%=goods.get(i).getName()%></td>
+            <td style="display:none;"><input class="idGood" type="hidden" name="idGood" value="<%=goods.get(i).getGoodId()%>"></td>
+            <td><%=goods.get(i).getName().replace("\"", "")%></td>
             <td><label>
-                <textarea readonly rows="2"><%=goods.get(i).getDescription()%></textarea>
+                <textarea readonly rows="2"><%=goods.get(i).getDescription().replace("\"", "")%></textarea>
             </label></td>
-            <td><%=goods.get(i).getStatus().toString()%></td>
+            <td><%=DbManager.inAuction(user,goods.get(i).getGoodId())?GoodStatus.in_auction:GoodStatus.not_in_auction%></td>
             <%
-                if(goods.get(i).getStatus().toString().equals("IN_AUCTION")){
+                if(DbManager.inAuction(user,goods.get(i).getGoodId())){
             %>
                 <td class="timer" id="timer<%=i%>"></td>
             <%}else{%>

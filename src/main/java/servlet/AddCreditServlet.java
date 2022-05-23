@@ -1,5 +1,7 @@
 package servlet;
 
+import database.DbManager;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -36,16 +38,19 @@ public class AddCreditServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }else{
+
+                String user = (String) session.getAttribute("user");
+                System.out.println(request.getParameter("credit"));
+                double credit = Double.parseDouble((request.getParameter("credit")));
+
                 System.out.println("Adding the sum...");
 
-                //Send the offer to the server and reload the page
-                // TODO: 15/04/2022 Add the increment of the credit!
-
-                /*if(add credit){
+                //Send the credit to add to the server and reload the page
+                if(DbManager.addCredit(user,credit)){
                     request.setAttribute("info", "Credit added correctly!");
                 }else{
                     request.setAttribute("error", "Sorry, something has gone wrong. Retry!");
-                }*/
+                }
 
                 //Reload the page to trigger the change of the credit in the jsp file
                 String targetJSP = "/pages/jsp/credit.jsp";

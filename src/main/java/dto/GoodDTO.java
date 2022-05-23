@@ -1,36 +1,31 @@
 package dto;
 
+import com.ericsson.otp.erlang.OtpErlangTuple;
+
 public class GoodDTO {
-    String id;
+    int goodId;
     String name;
     String description;
-    GoodStatus status;
-    String owner;
+    String user;
 
-    public GoodDTO(String name, String description, String owner) {
+    public GoodDTO(String name, String description, String user) {
         this.name = name;
         this.description = description;
-        this.owner = owner;
+        this.user = user;
     }
 
-    public GoodDTO(String id, String name, String description, GoodStatus status, String owner) {
-        this.id = id;
+    public GoodDTO(int goodId, String name, String description, String user) {
+        this.goodId = goodId;
         this.name = name;
         this.description = description;
-        this.status = status;
-        this.owner = owner;
+        this.user = user;
     }
 
-    public GoodDTO(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public GoodDTO(OtpErlangTuple good) {
+        this.goodId = Integer.parseInt(good.elementAt(1).toString());
+        this.name = good.elementAt(2).toString();
+        this.description = good.elementAt(3).toString();
+        this.user = good.elementAt(4).toString();
     }
 
     public String getName() {
@@ -49,30 +44,25 @@ public class GoodDTO {
         this.description = description;
     }
 
-    public GoodStatus getStatus() {
-        return status;
+    public String getUser() {
+        return user;
     }
 
-    public void setStatus(GoodStatus status) {
-        this.status = status;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public int getGoodId() {
+        return goodId;
     }
 
     @Override
     public String toString() {
         return "GoodDTO{" +
-                "id='" + id + '\'' +
+                "goodId=" + goodId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
-                ", owner='" + owner + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

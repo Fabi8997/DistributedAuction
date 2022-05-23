@@ -2,6 +2,8 @@ package servlet;
 
 import com.ericsson.otp.erlang.OtpConnection;
 import communication.OtpErlangCommunication;
+import database.DbManager;
+import utils.Utils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -17,15 +19,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //if(LoginManager.login()){
-        //String targetJSP = "/pages/jsp/homepage.jsp";
-        //}else{
-        //String targetJSP = "/pages/jsp/loginError.jsp";
-        // }
 
-        // TODO: 15/04/2022 substitute the if with if(LoginManager.login(req.getParam("user")))
-        if(request.getParameter("user").equals("prova")){
-
+        if(DbManager.login(request.getParameter("user"), request.getParameter("pass"))){
             String targetJSP = "/pages/jsp/homepage.jsp";
             String user = request.getParameter("user");
 
@@ -48,10 +43,6 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user",user);
                 }
             }
-
-            /*if(session.getAttribute("otpConnection") == null){
-                session.setAttribute("otpConnection", OtpErlangCommunication.getConnection(user));
-            }*/
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(request,response);
