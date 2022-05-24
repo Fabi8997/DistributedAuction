@@ -1,14 +1,16 @@
 package servlet;
 
-import com.ericsson.otp.erlang.OtpConnection;
 import communication.OtpErlangCommunication;
 import dto.AuctionDTO;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.*;
 
 @WebServlet(name = "StartAuctionServlet", value = "/StartAuctionServlet")
 public class StartAuctionServlet extends HttpServlet {
@@ -49,37 +51,23 @@ public class StartAuctionServlet extends HttpServlet {
                 String startPrice = request.getParameter("startPrice");
                 String duration = request.getParameter("duration");
 
-                // TODO: 27/04/2022 use this to instantiate the server! It's the number of seconds until the end of the auction
-                //System.out.println(localDateTime.toEpochSecond(ZoneOffset.of("+02:00"))-Instant.now().getEpochSecond());
-
-
-                //Generate the auction to be passed to the db manager!
 
                 AuctionDTO auction = new AuctionDTO(idAuction,idGood, Integer.toString(Integer.parseInt(duration)*60*60*1000),startPrice,user);
                 System.out.println(auction);
 
-                OtpErlangCommunication.start_auction(auction);
-                // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
-                //Change the status value on the db
-                /*
-                    if(DBManager.startAuction(auction){
-                        //if no errors occur then it goes to the confirmation page!
-                        targetJSP = "/pages/jsp/confirm_new_auction.jsp";
-                        System.out.println("auction started");
-                    }else{
-                        //redirect to the previous page with an error msg!
-                        String targetJSP = "/pages/jsp/new_auction.jsp";
-                        request.setAttribute("error", "Something has gone wrong!");
-                    }
-                */
+                String targetJSP;
+
+                if(OtpErlangCommunication.start_auction(auction)){
+                    //if no errors occur then it goes to the confirmation page!
+                    targetJSP = "/pages/jsp/confirm_start_auction.jsp";
+                    System.out.println("auction started");
+                }else{
+                    //redirect to the previous page with an error msg!
+                    targetJSP = "/pages/jsp/new_auction.jsp";
+                    request.setAttribute("error", "Something has gone wrong!");
+                }
 
                 System.out.println("auction started");
-
-                // TODO: 24/04/2022 Substitute this with the commented part
-                //Commenting and use this only for try
-                String targetJSP = "/pages/jsp/confirm_start_auction.jsp";
-                //String targetJSP = "/pages/jsp/new_auction.jsp";
-                //request.setAttribute("error", "Something has gone wrong!");
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);

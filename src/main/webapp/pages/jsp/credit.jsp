@@ -1,3 +1,4 @@
+<%@ page import="database.DbManager" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +7,11 @@
     <title>Credits</title>
 </head>
 <body>
-
+<%
+    String user = (String) session.getAttribute("user");
+    System.out.println("Retrieving the information for "+user+"...");
+    double credit = DbManager.getCredit(user);
+%>
 <div class="header">
     <h2>Distributed Auction</h2>
 </div>
@@ -18,7 +23,7 @@
     <li id="logout"><a href="<%= request.getContextPath() %>/LogoutServlet" >
         <img src="<%= request.getContextPath() %>/images/logout3.png" alt="logout">
     </a></li>
-    <li id="credit"><a class="active" href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
+    <li id="credit"><a class="active" href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
 

@@ -1,7 +1,7 @@
 package dto;
 
 public enum GoodStatus {
-    IN_AUCTION,
-    NOT_IN_AUCTION,
-    SOLD
+    not_in_auction,
+    in_auction,
+    finished
 }

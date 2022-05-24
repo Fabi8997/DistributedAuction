@@ -37,9 +37,6 @@ public class NewGoodServlet extends HttpServlet {
             }else{
                 System.out.println("Sending the new good page...");
 
-                // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
-
-
                 String targetJSP = "/pages/jsp/new_good.jsp";
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);

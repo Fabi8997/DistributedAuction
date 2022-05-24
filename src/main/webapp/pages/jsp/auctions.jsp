@@ -1,5 +1,7 @@
 <%@ page import="dto.AuctionDTO" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="database.DbManager" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,21 +9,11 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>Auctions</title>
 
-    <%// TODO: 26/04/2022 ADD the timer when it's passed the normal time! %>
-
     <%
-        ArrayList<AuctionDTO> auctions = new ArrayList<>();
-
-        auctions.add(new AuctionDTO("131213","31213","600000","15.0","Fabiano"));
-        auctions.add(new AuctionDTO("123444","86676","800000","22.0","Andrea"));
-        auctions.add(new AuctionDTO("144544","17667","150000","300.0","Paolo"));
-        auctions.add(new AuctionDTO("111124","15454","2121212","40.0","Bruno"));
-        auctions.add(new AuctionDTO("123254","12123","900000","12.0","Chiara"));
-        auctions.add(new AuctionDTO("321312","23132","4554455","15.0","Fabiano"));
-        auctions.add(new AuctionDTO("535355","43343","9898912","22.0","Andrea"));
-        auctions.add(new AuctionDTO("634622","54543","1050000","300.0","Paolo"));
-        auctions.add(new AuctionDTO("745545","54544","1300000","40.0","Bruno"));
-        auctions.add(new AuctionDTO("755445","53211","932000","12.0","Chiara"));
+        String user = (String) session.getAttribute("user");
+        double credit = DbManager.getCredit(user);
+        ArrayList<AuctionDTO> auctions = DbManager.getAllAuctions(user);
+        // TODO: 23/05/2022 Order the list by the duration!
     %>
 
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
@@ -85,7 +77,7 @@
     <li id="logout"><a href="<%= request.getContextPath() %>/LogoutServlet" >
         <img src="<%= request.getContextPath() %>/images/logout3.png" alt="logout">
     </a></li>
-    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
+    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
 <div class="auction_content">
@@ -106,14 +98,11 @@
         <tbody>
         <%
             for(int i = 0; i < auctions.size(); i++) {
-                // TODO: 20/04/2022 insert the data ordered by timestamp, so from the lower value to the higher
         %>
         <tr id = "row-<%=i%>">
-            <%// TODO: 26/04/2022 change getIdGood with DBManager.getGoodById(auction.getIdGood)
-              // Oppure conservare il nome del good nella tabella di mnesia!%>
-            <td><%=auctions.get(i).getIdGood()%></td>
-            <td><%=auctions.get(i).getSeller()%></td>
-            <td><%=auctions.get(i).getInitialPrice()%></td>
+            <td><%=Objects.requireNonNull(DbManager.getGood(Integer.parseInt(auctions.get(i).getIdGood()), user)).getName().replace("\"", "")%></td>
+            <td><%=auctions.get(i).getSeller().replace("\"", "")%></td>
+            <td><%=auctions.get(i).getCurrentPrice()%>&euro;</td>
             <td class="timer" id="timer<%=i%>"></td>
         </tr>
         <% } %>

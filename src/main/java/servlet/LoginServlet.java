@@ -1,11 +1,14 @@
 package servlet;
 
-import com.ericsson.otp.erlang.OtpConnection;
-import communication.OtpErlangCommunication;
+import database.DbManager;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "LoginServlet", value = "/LoginServlet")
@@ -17,15 +20,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //if(LoginManager.login()){
-        //String targetJSP = "/pages/jsp/homepage.jsp";
-        //}else{
-        //String targetJSP = "/pages/jsp/loginError.jsp";
-        // }
 
-        // TODO: 15/04/2022 substitute the if with if(LoginManager.login(req.getParam("user")))
-        if(request.getParameter("user").equals("prova")){
-
+        if(DbManager.login(request.getParameter("user"), request.getParameter("pass"))){
             String targetJSP = "/pages/jsp/homepage.jsp";
             String user = request.getParameter("user");
 
@@ -48,10 +44,6 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("user",user);
                 }
             }
-
-            /*if(session.getAttribute("otpConnection") == null){
-                session.setAttribute("otpConnection", OtpErlangCommunication.getConnection(user));
-            }*/
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
             requestDispatcher.forward(request,response);

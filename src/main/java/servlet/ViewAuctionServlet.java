@@ -10,10 +10,6 @@ public class ViewAuctionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // TODO: 09/04/2022 Retrieve from the db the object Auction with id = idAuction
-
-        // TODO: 09/04/2022 Add to the session the object retrieved in order to display it on auction_view 
-
         HttpSession session = request.getSession(false);
         if (session == null) {
             System.out.println("Session not exists!");
@@ -43,13 +39,11 @@ public class ViewAuctionServlet extends HttpServlet {
                 System.out.println("Sending the auction page...");
 
                 //Retrieve the data from the request
-                String idGood = request.getParameter("idGood");
-                System.out.println("The idGood is: " + idGood);
+                String idAuction = request.getParameter("idAuction");
+                System.out.println("The idAuction is: " + idAuction);
 
                 //Set the data to be displayed in the jsp file
-                request.setAttribute("idGood", idGood);
-
-                // TODO: 15/04/2022 Retrieve the information of the good from the db
+                request.setAttribute("idAuction", idAuction);
 
                 //Open the goods page
                 String targetJSP = "/pages/jsp/auction_view.jsp";

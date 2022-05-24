@@ -42,9 +42,6 @@ public class AuctionsServlet extends HttpServlet {
                 //Open the auctions page
                 String targetJSP = "/pages/jsp/auctions.jsp";
 
-                // TODO: 15/04/2022 Send the auctions to be visualized
-                request.setAttribute("iterations", 20);
-
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);
             }

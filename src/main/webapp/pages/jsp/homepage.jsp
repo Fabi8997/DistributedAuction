@@ -1,5 +1,6 @@
 <%@ page import="dto.AuctionDTO" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="database.DbManager" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,18 +25,15 @@
         <%}%>
 
         function addClickEvent() {
-            for (let i = 0; i < <%=auctions.size()%>; i++) {
+            let row;
+            <%for (int i = 0; i < auctions.size(); i++) { %>
 
-                <%
-                // TODO: 09/04/2022 Add instead of row-i the id of the auction!
-                %>
+            row = document.getElementById("row-"+<%=i%>);
 
-                const row = document.getElementById("row-"+i.toString());
-
-                row.addEventListener("click", () => {
-                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood="+i.toString();
-                });
-            }
+            row.addEventListener("click", () => {
+                window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idAuction="+<%=auctions.get(i).getIdAuction()%>;
+            });
+            <%}%>
         }
     </script>
 </head>
@@ -43,9 +41,8 @@
 <%
     String user = (String) session.getAttribute("user");
     System.out.println("Retrieving the information for "+user+"...");
-    // TODO: 15/04/2022 From here we initialize the information for the page content.
-
-    // TODO: 17/04/2022 Retrieve the list of auctions in which the user is involved
+    double credit = DbManager.getCredit(user);
+    // TODO: 24/05/2022 Retrieve from the session the ids of the auctions followed by the user!
     //List<Auctions> auctions = new ArrayList<>();
     //auctions = DBManager.getFollowedAuctions(User);
 
@@ -63,7 +60,7 @@
     <li id="logout"><a href="<%= request.getContextPath() %>/LogoutServlet" >
         <img src="<%= request.getContextPath() %>/images/logout3.png" alt="logout">
     </a></li>
-    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
+    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
 <div id="content">

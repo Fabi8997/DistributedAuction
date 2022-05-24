@@ -1,8 +1,14 @@
 package servlet;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import communication.OtpErlangCommunication;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "MakeOfferServlet", value = "/MakeOfferServlet")
@@ -40,17 +46,18 @@ public class MakeOfferServlet extends HttpServlet {
 
                 //Retrieve the information to make the offer!
                 String offer = request.getParameter("offer");
-                String idGood = request.getParameter("idGood");
+                String idAuction = request.getParameter("idAuction");
                 String user = (String) session.getAttribute("user");
 
                 //Test
-                System.out.println(user + " offered " + offer +  " for " + idGood);
+                System.out.println(user + " offered " + offer +  " for " + idAuction);
 
                 //Send the offer to the server and reload the page
-                // TODO: 15/04/2022 Add the send of the offer
+
+                OtpErlangCommunication.make_offer(idAuction,user,Double.parseDouble(offer));
 
                 //including the id of the good in the reloaded page
-                request.setAttribute("idGood", idGood);
+                request.setAttribute("idAuction", idAuction);
 
                 String targetJSP = "/pages/jsp/auction_view.jsp";
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);

@@ -1,10 +1,14 @@
 package servlet;
 
-import dto.GoodDTO;
+import database.DbManager;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "InsertGoodServlet", value = "/InsertGoodServlet")
@@ -41,29 +45,17 @@ public class InsertGoodServlet extends HttpServlet {
 
                 String name = request.getParameter("nameGood");
                 String description = request.getParameter("description");
-                String owner = session.getAttribute("user").toString();
+                String user = session.getAttribute("user").toString();
 
-                GoodDTO good = new GoodDTO(name, description, owner);
-                System.out.println(good);
-
-                // TODO: 20/04/2022 Database things (create an instance of an auction, start the countdown srv)
-                /*
-                    if(DBManager.insert(good){
-                        //if no errors occur then it goes to the confirmation page!
-                        targetJSP = "/pages/jsp/confirm_new_good.jsp";
-                    }else{
-                        //redirect to the previous page with an error msg!
-                        String targetJSP = "/pages/jsp/new_good.jsp";
-                        request.setAttribute("error", "Something has gone wrong!");
-                    }
-                */
-
-                // TODO: 24/04/2022 Substitute this with the commented part
-                //Commenting and use this only for try
-                String targetJSP = "/pages/jsp/confirm_new_good.jsp";
-                //String targetJSP = "/pages/jsp/new_good.jsp";
-                //request.setAttribute("error", "Something has gone wrong!");
-
+                String targetJSP;
+                if(DbManager.addGood(name,description,user)){
+                    //if no errors occur then it goes to the confirmation page!
+                    targetJSP = "/pages/jsp/confirm_new_good.jsp";
+                }else{
+                    //redirect to the previous page with an error msg!
+                    targetJSP = "/pages/jsp/new_good.jsp";
+                    request.setAttribute("error", "Something has gone wrong!");
+                }
 
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher(targetJSP);
                 requestDispatcher.forward(request,response);

@@ -7,16 +7,16 @@ import java.io.IOException;
 
 public class OtpErlangCommunication {
 
-    // TODO: 20/05/2022 Aggiungere il close ad ogni operazione!
     private static final String cookie = "abcde";
-    private static final String remoteNodeId ="auctions_server@localhost";
+    private static final String remoteNodeId ="server@localhost";
     private static final String registeredServer = "auction_server";
     private static final String registeredMasterServer ="auctions_manager";
 
     public static void main(String[] args) {
+        System.out.println(OtpErlangCommunication.get_info(1,"Provaj"));
     }
 
-    private static void get_status(String auction,String user){
+    /*private static void get_status(String auction,String user){
         OtpConnection conn = null;
         try {
             conn = getConnection(user);
@@ -32,16 +32,16 @@ public class OtpErlangCommunication {
             }
             e.printStackTrace();
         }
-    }
+    }*/
 
-    private static AuctionDTO get_info(String auction,String user){
+    public static AuctionDTO get_info(int auction,String user){
         OtpConnection conn = null;
         try {
             conn = getConnection(user);
             if(conn != null) {
-                conn.sendRPC(registeredServer, "get_info", new OtpErlangObject[]{new OtpErlangAtom(auction)});
+                conn.sendRPC(registeredServer, "get_info", new OtpErlangObject[]{new OtpErlangInt(auction)});
                 OtpErlangObject reply = conn.receiveRPC();
-                conn.close();// TODO: 20/05/2022 test if it's correct
+                conn.close();
                 if (reply instanceof OtpErlangTuple) {
                     return new AuctionDTO((OtpErlangTuple) reply);
                 }
@@ -55,16 +55,18 @@ public class OtpErlangCommunication {
         return null;
     }
 
-    private static void make_offer(String auction,String user,int offer){
+    public static boolean make_offer(String auction,String user,Double offer){
         OtpConnection conn = null;
         try {
             conn = getConnection(user);
             if(conn != null){
-                OtpErlangTuple msg = new OtpErlangTuple(new OtpErlangObject[]{new OtpErlangString(user), new OtpErlangInt(offer)});
-                conn.sendRPC(registeredServer,"make_offer",new OtpErlangObject[]{new OtpErlangAtom(auction),msg});
+                OtpErlangTuple msg = new OtpErlangTuple(new OtpErlangObject[]{new OtpErlangString(user), new OtpErlangDouble(offer)});
+                conn.sendRPC(registeredServer,"make_offer",new OtpErlangObject[]{new OtpErlangInt(Integer.parseInt(auction)),msg});
                 OtpErlangObject reply = conn.receiveRPC();
                 System.out.println("Received " + reply);
                 conn.close();
+
+                return Boolean.parseBoolean(reply.toString());
             }
         } catch (IOException | OtpErlangExit | OtpAuthException e) {
             if(conn!= null){
@@ -72,27 +74,26 @@ public class OtpErlangCommunication {
             }
             e.printStackTrace();
         }
+
+        return false;
     }
 
-    public static void start_auction(AuctionDTO newAuction){
+    public static boolean start_auction(AuctionDTO newAuction){
         OtpConnection conn = null;
         try {
             conn = getConnection(newAuction.getSeller());
             if(conn != null) {
                 OtpErlangTuple state = new OtpErlangTuple(new OtpErlangObject[]{
-                        new OtpErlangString(newAuction.getIdGood()),
+                        new OtpErlangInt(Integer.parseInt(newAuction.getIdGood())),
                         new OtpErlangInt(Integer.parseInt(newAuction.getDuration())),
                         new OtpErlangDouble(Double.parseDouble(newAuction.getInitialPrice())),
                         new OtpErlangString(newAuction.getSeller())
                 });
-                OtpErlangTuple msg = new OtpErlangTuple(new OtpErlangObject[]{
-                        new OtpErlangAtom(newAuction.getIdAuction()),
-                        state
-                });
-                conn.sendRPC(registeredMasterServer, "start_new_auction", new OtpErlangObject[]{msg});
+                conn.sendRPC(registeredMasterServer, "start_new_auction", new OtpErlangObject[]{state});
                 OtpErlangObject reply = conn.receiveRPC();
                 System.out.println("Received " + reply);
                 conn.close();
+                return true;
             }
         } catch (IOException | OtpErlangExit | OtpAuthException e) {
             if(conn != null){
@@ -100,6 +101,7 @@ public class OtpErlangCommunication {
             }
             e.printStackTrace();
         }
+        return false;
     }
 
     public static OtpConnection getConnection(String username) throws IOException {
