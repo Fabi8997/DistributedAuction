@@ -21,17 +21,6 @@ public class AuctionDTO {
         this.seller = seller;
     }
 
-    public AuctionDTO(String idAuction, String idGood, String duration, String initialPrice, String currentPrice, String currentWinner, String seller, String status) {
-        this.idAuction = idAuction;
-        this.idGood = idGood;
-        this.duration = duration;
-        this.initialPrice = initialPrice;
-        this.currentPrice = currentPrice;
-        this.currentWinner = currentWinner;
-        this.seller = seller;
-        this.status = status;
-    }
-
     public AuctionDTO(OtpErlangTuple auctionInfo) {
         idAuction = auctionInfo.elementAt(0).toString();
         idGood = auctionInfo.elementAt(1).toString();
@@ -63,18 +52,9 @@ public class AuctionDTO {
         return currentPrice;
     }
 
-    public String getCurrentWinner() {
-        return currentWinner;
-    }
-
     public String getSeller() {
         return seller;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
 
     @Override
     public String toString() {

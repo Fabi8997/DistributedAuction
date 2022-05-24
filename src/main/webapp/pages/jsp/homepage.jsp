@@ -25,18 +25,15 @@
         <%}%>
 
         function addClickEvent() {
-            for (let i = 0; i < <%=auctions.size()%>; i++) {
+            let row;
+            <%for (int i = 0; i < auctions.size(); i++) { %>
 
-                <%
-                // TODO: 09/04/2022 Add instead of row-i the id of the auction!
-                %>
+            row = document.getElementById("row-"+<%=i%>);
 
-                const row = document.getElementById("row-"+i.toString());
-
-                row.addEventListener("click", () => {
-                    window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idGood="+i.toString();
-                });
-            }
+            row.addEventListener("click", () => {
+                window.location.href = "<%=request.getContextPath()%>/ViewAuctionServlet?idAuction="+<%=auctions.get(i).getIdAuction()%>;
+            });
+            <%}%>
         }
     </script>
 </head>
@@ -45,9 +42,7 @@
     String user = (String) session.getAttribute("user");
     System.out.println("Retrieving the information for "+user+"...");
     double credit = DbManager.getCredit(user);
-    // TODO: 15/04/2022 From here we initialize the information for the page content.
-
-    // TODO: 17/04/2022 Retrieve the list of auctions in which the user is involved
+    // TODO: 24/05/2022 Retrieve from the session the ids of the auctions followed by the user!
     //List<Auctions> auctions = new ArrayList<>();
     //auctions = DBManager.getFollowedAuctions(User);
 

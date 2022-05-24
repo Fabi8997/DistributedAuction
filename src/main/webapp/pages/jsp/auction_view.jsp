@@ -1,3 +1,7 @@
+<%@ page import="database.DbManager" %>
+<%@ page import="dto.AuctionDTO" %>
+<%@ page import="communication.OtpErlangCommunication" %>
+<%@ page import="dto.GoodDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,15 +10,19 @@
     <title>View Auction</title>
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>
     <%
-        String idGood = (request.getAttribute("idGood") != null)?(String) request.getAttribute("idGood"):request.getParameter("idGood");
-        String timestamp = "Apr 18, 2022 23:31:00"; // TODO: 19/04/2022 Take this from the auction object dto retrieved from mnesia
-    %>
+        String user = (String) session.getAttribute("user");
+        System.out.println("Retrieving the information for "+user+"...");
+        double credit = DbManager.getCredit(user);
+        String idAuction = (request.getAttribute("idAuction") != null)?(String) request.getAttribute("idAuction"):request.getParameter("idAuction");
+        AuctionDTO auction = OtpErlangCommunication.get_info(Integer.parseInt(idAuction),user);
+        assert auction != null;
+        GoodDTO good = DbManager.getGood(Integer.parseInt(auction.getIdGood()),user);
+        assert good != null;%>
 </head>
-<body onload="setTimer('<%=timestamp%>')">
+<body onload="setTimer('<%=utils.Utils.datetimeFromNow(auction.getDuration())%>')">
 
 <div class="header">
     <h2>Distributed Auction</h2>
-    <p>We have to change the title for sure.</p>
 </div>
 
 <ul class="topnav">
@@ -24,26 +32,22 @@
     <li id="logout"><a href="<%= request.getContextPath() %>/LogoutServlet" >
         <img src="<%= request.getContextPath() %>/images/logout3.png" alt="logout">
     </a></li>
-    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet">0,00&euro;</a></li>
+    <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
 <div class="ViewAuctionContent">
     <table>
         <tr>
             <th>Good:</th>
-            <td>Good1</td>
+            <td><%=good.getName().replace("\"", "")%></td>
         </tr>
         <tr>
             <th>Seller:</th>
-            <td>john doe</td>
-        </tr>
-        <tr>
-            <th>Status:</th>
-            <td>Status</td>
+            <td><%=auction.getSeller().replace("\"", "")%></td>
         </tr>
         <tr>
             <th>Current offer:</th>
-            <td>200&euro;</td>
+            <td><%=auction.getCurrentPrice()%>&euro;</td>
         </tr>
         <tr>
             <th>Time left:</th>
@@ -53,7 +57,7 @@
 
 
     <form class="ViewAuctionContentForm" action="<%= request.getContextPath() %>/MakeOfferServlet">
-        <input type="hidden" name="idGood" value="<%=idGood%>">
+        <input type="hidden" name="idAuction" value="<%=auction.getIdAuction()%>">
         <label for="offerInput"></label><input id="offerInput" type="text" placeholder="Insert your offer.." name="offer">
         <button type="submit">OFFER</button>
     </form>

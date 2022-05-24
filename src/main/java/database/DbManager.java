@@ -1,6 +1,7 @@
 package database;
 
 import com.ericsson.otp.erlang.*;
+import communication.OtpErlangCommunication;
 import dto.AuctionDTO;
 import dto.GoodDTO;
 
@@ -14,7 +15,8 @@ public class DbManager {
     private static final String registeredServer ="mnesia_manager";
 
     public static void main(String[] args) {
-        System.out.println(DbManager.getAuctionFromGood(1,"Provaj"));
+
+        System.out.println(DbManager.getAllAuctions("Provaj"));
     }
 
     //Tested --> OK!
@@ -215,7 +217,7 @@ public class DbManager {
                 System.out.println("Received " + reply);
                 conn.close();
                 if (reply instanceof OtpErlangList) {
-                    return toAuctionsArray((OtpErlangList) reply);
+                    return toAuctionsArray((OtpErlangList) reply, user);
                 }
             }
         } catch (IOException | OtpErlangExit | OtpAuthException e) {
@@ -250,11 +252,12 @@ public class DbManager {
         return goods;
     }
 
-    private static ArrayList<AuctionDTO> toAuctionsArray(OtpErlangList list){
+    private static ArrayList<AuctionDTO> toAuctionsArray(OtpErlangList list, String user){
         ArrayList<AuctionDTO> auctions = new ArrayList<>();
 
         for(int i = 0; i < list.arity(); i++){
-            auctions.add(new AuctionDTO((OtpErlangTuple) list.elementAt(i)));
+            int idAuction = Integer.parseInt(String.valueOf(((OtpErlangTuple) list.elementAt(i)).elementAt(1)));
+            auctions.add(OtpErlangCommunication.get_info(idAuction,user));
         }
         return auctions;
     }

@@ -29,7 +29,7 @@
             if(DbManager.inAuction(user,good.getGoodId())){
                 int auctionId = DbManager.getAuctionFromGood(good.getGoodId(),user);
                 AuctionDTO auction = OtpErlangCommunication.get_info(auctionId,user);
-        %>
+        assert auction != null;%>
         timestampArray[<%=j++%>] = "<%=utils.Utils.datetimeFromNow(auction.getDuration())%>";
 
         <%  }

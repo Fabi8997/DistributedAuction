@@ -8,19 +8,6 @@ public class GoodDTO {
     String description;
     String user;
 
-    public GoodDTO(String name, String description, String user) {
-        this.name = name;
-        this.description = description;
-        this.user = user;
-    }
-
-    public GoodDTO(int goodId, String name, String description, String user) {
-        this.goodId = goodId;
-        this.name = name;
-        this.description = description;
-        this.user = user;
-    }
-
     public GoodDTO(OtpErlangTuple good) {
         this.goodId = Integer.parseInt(good.elementAt(1).toString());
         this.name = good.elementAt(2).toString();
@@ -38,10 +25,6 @@ public class GoodDTO {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getUser() {
