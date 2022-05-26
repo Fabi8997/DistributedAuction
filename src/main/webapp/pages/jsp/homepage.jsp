@@ -85,10 +85,6 @@
             </tbody>
         </table>
     </div>
-    <div id="other_actions">
-        <button onclick="location.href='<%=request.getContextPath()%>/ShowYourGoodsAuctionsServlet'">Show your goods on auction</button>
-        <button onclick="location.href='<%=request.getContextPath()%>/ShowHistoryServlet'">History of your auctions</button>
-    </div>
     <p id="timer"></p>
 </div>
 
