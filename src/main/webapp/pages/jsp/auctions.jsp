@@ -13,7 +13,6 @@
         String user = (String) session.getAttribute("user");
         double credit = DbManager.getCredit(user);
         ArrayList<AuctionDTO> auctions = DbManager.getAllAuctions(user);
-        // TODO: 23/05/2022 Order the list by the duration!
     %>
 
     <script src="<%= request.getContextPath() %>/javascript/timer.js"></script>

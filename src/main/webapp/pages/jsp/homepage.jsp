@@ -1,17 +1,16 @@
 <%@ page import="dto.AuctionDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="database.DbManager" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <%
-        ArrayList<AuctionDTO> auctions = new ArrayList<>();
-        auctions.add(new AuctionDTO("131213","31213","600000","15.0","Fabiano"));
-        auctions.add(new AuctionDTO("123444","86676","800000","22.0","Andrea"));
-        auctions.add(new AuctionDTO("144544","17667","150000","300.0","Paolo"));
-        auctions.add(new AuctionDTO("111124","15454","100000","40.0","Bruno"));
-        auctions.add(new AuctionDTO("123254","12123","900000","12.0","Chiara"));
+        String user = (String) session.getAttribute("user");
+        System.out.println("Retrieving the information for "+user+"...");
+        double credit = DbManager.getCredit(user);
+        ArrayList<AuctionDTO> auctions = DbManager.getAllAuctions(user);
     %>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles/generalStyle.css">
     <title>homepage</title>
@@ -38,16 +37,7 @@
     </script>
 </head>
 <body onload="addClickEvent(); setTimers(timestampArray)">
-<%
-    String user = (String) session.getAttribute("user");
-    System.out.println("Retrieving the information for "+user+"...");
-    double credit = DbManager.getCredit(user);
-    // TODO: 24/05/2022 Retrieve from the session the ids of the auctions followed by the user!
-    //List<Auctions> auctions = new ArrayList<>();
-    //auctions = DBManager.getFollowedAuctions(User);
 
-
-%>
 
 <div class="header">
     <h2>Distributed Auction</h2>
@@ -63,6 +53,8 @@
     <li id="credit"><a href="<%= request.getContextPath() %>/CreditServlet"><%=credit%>&euro;</a></li>
 </ul>
 
+<h3>Welcome <%=user%> !</h3>
+
 <div id="content">
     <div id="current_auction">
         <table id="myTable">
@@ -75,13 +67,14 @@
             <tbody>
             <%
                 for(int i = 0; i < auctions.size(); i++) {
+                    if(Integer.parseInt(auctions.get(i).getDuration()) < 120000){
             %>
             <tr id = "row-<%=i%>">
-                <%// TODO: 27/04/2022 Retrieve the good's name from the db! %>
-                <td><%=auctions.get(i).getIdGood()%></td>
+                <td><%=Objects.requireNonNull(DbManager.getGood(Integer.parseInt(auctions.get(i).getIdGood()), user)).getName().replace("\"", "")%></td>
                 <td class="timer" id="timer<%=i%>">00:00:00</td>
             </tr>
-            <% } %>
+            <%      }
+                }%>
             </tbody>
         </table>
     </div>

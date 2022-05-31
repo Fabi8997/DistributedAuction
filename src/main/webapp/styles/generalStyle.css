@@ -149,7 +149,7 @@ table th {
     font-size: 17px;
     border: 1px solid #CCC;
     float: left;
-    width: 65%;
+    width: 64%;
     background: #f8f8f8;
 }
 
@@ -247,4 +247,10 @@ table th {
     border: 0;
     text-shadow: 0 1px rgba(0,0,0,0.3);
     background-color: #486286;
+}
+
+h3{
+    font-size: 30px;
+    text-align: center;
+    color: #EEEDDE;
 }
