@@ -8,10 +8,6 @@
 <body>
 
 
-<%
-    // TODO: 09/04/2022 ADD ON EACH SERVLET THE RETRIEVE THE CREDIT!
-%>
-
 <div class="login-card">
     <h1>Log-in</h1><br>
     <form method="post" action="<%= request.getContextPath() %>/LoginServlet">
